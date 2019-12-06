@@ -1,17 +1,24 @@
 <template>
   <div class="Home">
-    <LoginForm />
+      <NavBar />
+      <router-view></router-view>
+      <Footer />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import LoginForm from '@/components/LoginForm.vue'
+import NavBar from '../components/NavBar'    
+import Footer from '../components/Footer'    
+// import Dashboard from './Dashboard'    
 
 export default {
   name: 'Home',
   components: {
-    LoginForm
+      NavBar,
+      Footer,
+    //   Dashboard
+
   }
 }
 </script>

@@ -12,23 +12,23 @@
                         <v-card-text>
                             <v-form ref="form" lazy-validation>
 
-                                <v-text-field label="Login" prepend-icon="account_circle"></v-text-field>
+                                <v-text-field label="Login" prepend-icon="mdi-account-box"></v-text-field>
 
                                 <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    prepend-icon="lock" :type="show1 ? 'text' : 'password'" name="input"
+                                    prepend-icon="mdi-lock" :type="show1 ? 'text' : 'password'" name="input"
                                     label="Senha" hint="Não compartilhe sua senha com ninguém" 
                                     @click:append="show1 = !show1">
                                 </v-text-field>
-                                <v-row align="center" justify="center">
-                                    <v-col align="start" justify="center">
+                                <v-row align="center">
+                                    <v-col align="start">
                                         <v-btn color="success" class="mr-4">
                                             Login
                                         </v-btn>
                                     </v-col>
 
-                                    <v-col align="end" justify="center">
+                                    <v-col align="end">
                                         <v-btn color="error" class="mr-4">
-                                            Esqueci minha senha
+                                            Recuperar senha
                                         </v-btn>
                                     </v-col>
 
