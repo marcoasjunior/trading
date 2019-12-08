@@ -1,15 +1,15 @@
 <template>
     <div>
-        <HCard />
+        <NotifCard />
     </div>
 </template>
 
 <script>
-import HCard from '../components/HCard'
+import NotifCard from '../components/NotifCard'
 export default {
     name: 'Notifications',
     components: {
-      HCard
+      NotifCard
 
 
   }

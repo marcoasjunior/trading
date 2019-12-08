@@ -1,6 +1,6 @@
 <template>
-  <v-footer fixed>
+  <v-footer fixed absolute>
     <v-spacer></v-spacer>
-    <div>&copy; {{ new Date().getFullYear() }}</div>
+    <div>TrayD &copy; {{ new Date().getFullYear() }}</div>
   </v-footer>
 </template>

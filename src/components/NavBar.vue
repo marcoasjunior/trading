@@ -6,7 +6,7 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Trayding</v-toolbar-title>
+      <v-toolbar-title>{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn to='/Notifications' icon>
         <v-icon>mdi-bell</v-icon>
@@ -38,7 +38,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+              <v-list-item-title @click="title = item.text" v-text="item.text"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -53,11 +53,12 @@
     data: () => ({
       drawer: false,
       group: null,
+      title: 'Home',
       item: 0,
       items: [
+        { text: 'Home', route:'/Home', icon: 'mdi-star' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
         { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd-outline' },
-        { text: 'Starred', icon: 'mdi-star' },
         { text: 'Recent', icon: 'mdi-history' },
         { text: 'Offline', icon: 'mdi-check-circle' },
         { text: 'Uploads', icon: 'mdi-upload' },
