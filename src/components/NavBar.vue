@@ -32,20 +32,24 @@
             v-for="(item, index) in items"
             :key="index"
             :to="item.route"
+            
+    
+            
+            
           >
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon>
 
             <v-list-item-content> 
-              <v-list-item-title @click.native="changeTitle()"  v-text="item.text"></v-list-item-title>
+              <v-list-item-title @click="change" v-text="item.text"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
-  </div>
+</div>
 </template>
 
 <script>
@@ -69,18 +73,22 @@
       group () {
         this.drawer = false
       },
-      methods: {
-        changeTitle() {
-          console.log('vai tomar no meio do tgeu cu')
-        }
-      },  
-    computed: {
-      title: function (){
-       return this.$store.state.titleBar
-      }
-      }
-      
     },
+
+    methods: {
+      change(event) {
+        console.log(event.target.innerHTML)
+        this.$store.dispatch('changeTitleBar', event.target.innerHTML )
+      }
+    },
+
+    computed: {
+      title() {
+        return this.$store.getters.titleBar
+    }
+
+
     
+  }
   }
 </script>

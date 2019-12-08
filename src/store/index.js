@@ -9,12 +9,19 @@ export default new Vuex.Store({
   },
   mutations: {
 
-    changeTitlebar(state) {
-      state.titleBar = 'mudou'
+    setTitleBar(state, newTitle) {
+      state.titleBar = newTitle
 
     }
   },
+  getters: {
+    titleBar: state => state.titleBar
+  },
   actions: {
+    changeTitleBar(context, newTitle){
+      context.commit('setTitleBar', newTitle)
+    }
+
   },
   modules: {
   }
