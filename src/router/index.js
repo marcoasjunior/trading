@@ -11,15 +11,21 @@ const routes = [
     component: Login
   },
   {
-    path: '/Home',
-    name: 'Home',
-    component: () => import('../views/Home.vue'),
+    path: '/Main',
+    name: 'Main',
+    component: () => import('../views/Main.vue'),
     children: [
       {
         // UserProfile will be rendered inside User's <router-view>
         // when /user/:id/profile is matched
         path: '/Dashboard',
         component: () => import('../views/Dashboard.vue')
+      },
+      {
+        // UserProfile will be rendered inside User's <router-view>
+        // when /user/:id/profile is matched
+        path: '/Home',
+        component: () => import('../views/Home.vue')
       },
       {
         // UserProfile will be rendered inside User's <router-view>

@@ -37,8 +37,8 @@
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title @click="title = item.text" v-text="item.text"></v-list-item-title>
+            <v-list-item-content> 
+              <v-list-item-title @click.native="changeTitle()"  v-text="item.text"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -49,14 +49,14 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
   export default {
     data: () => ({
       drawer: false,
       group: null,
-      title: 'Home',
       item: 0,
       items: [
-        { text: 'Home', route:'/Home', icon: 'mdi-star' },
+        { text: 'Home', route:'/Home', icon: 'mdi-home' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
         { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd-outline' },
         { text: 'Recent', icon: 'mdi-history' },
@@ -69,6 +69,18 @@
       group () {
         this.drawer = false
       },
+      methods: {
+        changeTitle() {
+          console.log('vai tomar no meio do tgeu cu')
+        }
+      },  
+    computed: {
+      title: function (){
+       return this.$store.state.titleBar
+      }
+      }
+      
     },
+    
   }
 </script>
