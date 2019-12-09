@@ -38,6 +38,12 @@ const routes = [
         // when /user/:id/profile is matched
         path: '/Notifications',
         component: () => import('../views/Notifications.vue')
+      },
+      {
+        // UserProfile will be rendered inside User's <router-view>
+        // when /user/:id/profile is matched
+        path: '/MyData',
+        component: () => import('../views/MyData.vue')
       }
       
 ]

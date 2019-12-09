@@ -11,9 +11,6 @@
       <v-btn to='/Notifications' icon>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -53,7 +50,7 @@
             </v-list-item-icon>
 
             <v-list-item-content> 
-              <v-list-item-title @click="change" v-text="item.text"></v-list-item-title>
+              <v-list-item-title @click="changeTitle" v-text="item.text"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -74,7 +71,7 @@
         { text: 'Timeline', route:'/Home', icon: 'mdi-home' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
         { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd' },
-        { text: 'Meus Dados', icon: 'mdi-account-card-details' },
+        { text: 'Meus Dados', route:'/MyData', icon: 'mdi-account-card-details' },
         { text: 'Configurações', icon: 'mdi-settings' },
         { text: 'Histórico', icon: 'mdi-history' },
         { text: 'Sobre', icon: 'mdi-information' }
@@ -87,7 +84,7 @@
     },
 
     methods: {
-      change(event) {
+      changeTitle(event) {
         this.$store.dispatch('changeTitleBar', event.target.innerHTML )
       }
     },
