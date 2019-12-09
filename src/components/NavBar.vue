@@ -73,11 +73,11 @@
       items: [
         { text: 'Timeline', route:'/Home', icon: 'mdi-home' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
-        { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd-outline' },
-        { text: 'Recent', icon: 'mdi-history' },
-        { text: 'Offline', icon: 'mdi-check-circle' },
-        { text: 'Uploads', icon: 'mdi-upload' },
-        { text: 'Backups', icon: 'mdi-cloud-upload' },
+        { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd' },
+        { text: 'Meus Dados', icon: 'mdi-account-card-details' },
+        { text: 'Configurações', icon: 'mdi-settings' },
+        { text: 'Histórico', icon: 'mdi-history' },
+        { text: 'Sobre', icon: 'mdi-information' }
       ],
     }),
     watch: {
