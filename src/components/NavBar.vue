@@ -71,7 +71,7 @@
       group: null,
       item: 0,
       items: [
-        { text: 'Home', route:'/Home', icon: 'mdi-home' },
+        { text: 'Timeline', route:'/Home', icon: 'mdi-home' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
         { text: 'Pregão Eletrônico', route:'/Trading', icon: 'mdi-cash-usd-outline' },
         { text: 'Recent', icon: 'mdi-history' },
