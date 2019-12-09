@@ -38,8 +38,8 @@
       item: 1,
       items: [
         { text: 'Objeto', icon: 'mdi-package-variant-closed', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' },
-        { text: 'Audience', icon: 'mdi-account' },
-        { text: 'Conversions', icon: 'mdi-flag' },
+        { text: 'Comprador', icon: 'mdi-account', description: 'SESI'  },
+        { text: 'Fase', icon: 'mdi-flag', description: 'Encerrado'  },
       ],
     }),
   }
