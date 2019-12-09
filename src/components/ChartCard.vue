@@ -1,34 +1,37 @@
 <template>
+  <v-card
+    class="mt-4 mx-auto"
+    max-width="400"
+  >
+    <v-sheet
+      class="v-sheet--offset mx-auto"
+      color="cyan"
+      elevation="12"
+      max-width="calc(100% - 32px)"
+    >
+      <v-sparkline
+        :labels="labels"
+        :value="value"
+        color="white"
+        line-width="2"
+        padding="16"
+      ></v-sparkline>
+    </v-sheet>
 
-    
-          <v-card>
-            <v-img
-              :src="cardProps.src"
-              class="white--text align-end"
-              height="300px"
-            >
-              <v-card-title v-text="cardProps.title"></v-card-title>
-            </v-img>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>mdi-file-document-outline</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-download</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-     
-
-</template>
+    <v-card-text class="pt-0">
+      <div class="title font-weight-light mb-2">User Registrations</div>
+      <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
+      <v-divider class="my-2"></v-divider>
+      <v-icon
+        class="mr-2"
+        small
+      >
+        mdi-clock
+      </v-icon>
+      <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
+    </v-card-text>
+  </v-card>
+  </template>
 <script>
 export default {
     name: 'ChartCard',
@@ -36,9 +39,33 @@ export default {
         cardProps: Object
     },
     data: () => ({
-
-
-
-    })
-}
+      labels: [
+        '12am',
+        '3am',
+        '6am',
+        '9am',
+        '12pm',
+        '3pm',
+        '6pm',
+        '9pm',
+      ],
+      value: [
+        200,
+        675,
+        410,
+        390,
+        310,
+        460,
+        250,
+        240,
+      ],
+    }),
+  }
 </script>
+
+<style scoped>
+  .v-sheet--offset {
+    top: -24px;
+    position: relative;
+  }
+</style>

@@ -21,6 +21,20 @@
       absolute
       temporary
     >
+    <template v-slot:prepend>
+        <v-list-item two-line>
+          <v-list-item-avatar>
+            <img src="https://randomuser.me/api/portraits/women/81.jpg">
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title>Jane Smith</v-list-item-title>
+            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+
+      <v-divider></v-divider>
        <v-list
         nav
         dense
@@ -32,10 +46,7 @@
             v-for="(item, index) in items"
             :key="index"
             :to="item.route"
-            
-    
-            
-            
+              
           >
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
@@ -77,7 +88,6 @@
 
     methods: {
       change(event) {
-        console.log(event.target.innerHTML)
         this.$store.dispatch('changeTitleBar', event.target.innerHTML )
       }
     },

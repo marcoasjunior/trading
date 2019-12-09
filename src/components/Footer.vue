@@ -4,3 +4,6 @@
     <div>TrayD &copy; {{ new Date().getFullYear() }}</div>
   </v-footer>
 </template>
+<style scoped>
+
+</style>
