@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="mx-auto"
-    max-width="434"
+    max-width="527"
     tile
   >
     <v-img

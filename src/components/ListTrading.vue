@@ -1,5 +1,22 @@
 <template>
     <v-row justify="center">
+        <v-col>
+  <v-card  class="mx-auto"
+    max-width="400">
+    <v-card-title>
+   
+
+      <v-text-field
+   
+        append-icon="mdi-magnify"
+        label="Filtro"
+        hint="Filtre os resultados"
+        autofocus
+        dense
+      ></v-text-field>
+    </v-card-title>
+  </v-card>
+        </v-col>
         <v-expansion-panels popout>
             <v-expansion-panel v-for="(item,i) in 5" :key="i">
                 <v-expansion-panel-header disable-icon-rotate>P.E. -

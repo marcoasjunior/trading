@@ -7,7 +7,7 @@
                 <v-col cols="12" sm="8" md="4">
                     <v-card >                     
                         <v-card-text>
-                            <h3 class="subtitle-1"> Alterar Dados de Entrada </h3>
+                            <h3 class="subtitle-1"> Alterar Senha </h3>
                             <v-divider
                             horizontal/>
                             <v-form ref="form" lazy-validation>
@@ -19,7 +19,7 @@
                                 </v-text-field>
                                 <v-text-field v-model="password2" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                     prepend-icon="mdi-lock-alert" :type="show1 ? 'text' : 'password'" name="input"
-                                    label="Senha" hint="Deve ser igual à senha acima" counter
+                                    label="Confirmar Senha" hint="As senhas devem ser iguais" counter
                                     @click:append="show1 = !show1">
                                 </v-text-field>
                                 <v-row dense align="center" justify="center">

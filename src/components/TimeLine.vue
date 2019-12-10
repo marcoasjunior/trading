@@ -1,7 +1,7 @@
 <template>
 <v-card
     class="mx-auto cCard"
-    max-width="400"
+    max-width="800"
   >
   <v-subheader> Timeline </v-subheader>
   <v-divider ></v-divider>

@@ -7,21 +7,24 @@
                 <v-col cols="12" sm="8" md="4">
                     <v-card >                     
                         <v-card-text>
-                            <h3 class="subtitle-1"> Alterar Dados de Entrada </h3>
+                            <h3  class="subtitle-1"> Alterar Endereço </h3>
                             <v-divider
                             horizontal/>
                             <v-form ref="form" lazy-validation>
 
-                                <v-text-field v-model="password1" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    prepend-icon="mdi-lock" :type="show1 ? 'text' : 'password'" name="input"
-                                    label="Senha" hint="Pelo menos 6 caracteres" counter
-                                    @click:append="show1 = !show1">
+                                <v-text-field v-model="cep" v-mask="'#####-###'" prepend-icon="mdi-map-marker-circle" type="text" name="input"
+                                    label="CEP">
+                                </v-text-field>                     
+
+                                <v-text-field v-model="address" prepend-icon="mdi-map-marker" type="text" name="input"
+                                    label="Endereço">
                                 </v-text-field>
-                                <v-text-field v-model="password2" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    prepend-icon="mdi-lock-alert" :type="show1 ? 'text' : 'password'" name="input"
-                                    label="Senha" hint="Deve ser igual à senha acima" counter
-                                    @click:append="show1 = !show1">
+
+                                <v-text-field v-model="address2" prepend-icon="mdi-map-marker-plus" type="text" name="input"
+                                    label="Complemento" hint="Apenas se houver (apto, bloco, quadra)">
                                 </v-text-field>
+
+                             
                                 <v-row dense align="center" justify="center">
                                     <v-col align="center">
                                         <v-btn dense color="success">
@@ -43,9 +46,10 @@
     export default {
         data() {
             return {
-                show1: false,
-                password1: '',
-                password2: ''
+                address: '',
+                address2: '',
+                cep: null,
+                number: null,
             }
         },
 
