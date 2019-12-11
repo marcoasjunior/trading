@@ -17,6 +17,7 @@
       v-model="drawer"
       absolute
       temporary
+
     >
     <template v-slot:prepend>
         <v-list-item two-line>
