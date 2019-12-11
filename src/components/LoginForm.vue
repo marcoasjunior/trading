@@ -19,9 +19,9 @@
                             </v-text-field>
                             <v-row align="center">
                                 <v-col align="center">
-                                    <v-btn color="success" class="my-n10">
-                                        Entrar
-                                    </v-btn>
+                                    <v-btn class="ma-2" color="success darken-2" dark>
+        <v-icon dark left>mdi-login-variant</v-icon>Entrar
+      </v-btn>
                                 </v-col>
                             </v-row>
                             <v-row align="center">
