@@ -14,7 +14,10 @@
                 <v-text-field class="my-n2" v-model="social" label="Razão Social" required>
                 </v-text-field>
 
-                <v-text-field class="my-n2" v-model="cnpj" v-mask="'##.###.###/####-##'" label="CNPJ" required>
+                <v-text-field v-show="!checkbox" class="my-n2" v-model="cnpj" v-mask="'##.###.###/####-##'" label="CNPJ" required>
+                </v-text-field>
+
+                <v-text-field v-show="checkbox" class="my-n2" v-model="cpf" v-mask="'###.###.###-##'" label="CPF" required>
                 </v-text-field>
 
                 <v-checkbox v-model="mei" label="Empresa MEI, ME ou EPP" required></v-checkbox>
@@ -63,8 +66,6 @@
 
             <v-form ref="form" v-model="valid" lazy-validation>
 
-                <v-text-field class="my-n0" v-model="name" label="Login" hint="Use para entrar no app" required>
-                </v-text-field>
 
                 <v-text-field class="my-n0" v-model="name" label="Nome Completo" required>
                 </v-text-field>
@@ -73,7 +74,7 @@
                                     label="Telefone">
                                 </v-text-field>
 
-                                <v-text-field v-model="email"  type="email" name="input"
+                                <v-text-field v-model="email"  type="email" name="input" hint="E-mail será o LOGIN para entrar no sistema"
                                     label="E-mail">
                                 </v-text-field>
 
@@ -134,7 +135,8 @@
             e6: 1,
             number: '',
             email: '',
-            email2: ''
+            email2: '',
+            cpf: '',
 
         }),
 

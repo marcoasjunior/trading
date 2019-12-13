@@ -1,19 +1,25 @@
 <template>
-  <v-container fluid>
+    <v-container class="my-n5" fluid>
         <v-row align="center" justify="center">
             <v-col cols="10" md="4">
                 <v-card class="elevation-5">
-                    <v-img
-                        class="font-weight-bold white--text"
-                        height="300px"
-                        src="https://res.cloudinary.com/dxblalpv2/image/upload/v1576038456/bruce-mars-FWVMhUa_wbY-unsplash_uduyin.jpg"
-    >
-                        <v-card-title>Cadastre-se</v-card-title>
-                        </v-img>
+                    <v-img class="font-weight-bold" height="200px"
+                        src="https://res.cloudinary.com/dxblalpv2/image/upload/v1576038456/bruce-mars-FWVMhUa_wbY-unsplash_uduyin.jpg">
+
+
+                    </v-img>
+                    <v-card-actions>
+                        <v-col align="center" justify="center">
+                        <v-btn block class='white--text' color="#9C27B0">Cadastre-se </v-btn>
+                        </v-col>
+                    </v-card-actions>
+
+
+
                 </v-card>
             </v-col>
         </v-row>
-  </v-container>
+    </v-container>
 </template>
 
 <script>
@@ -23,5 +29,7 @@ export default {
 </script>
 
 <style>
-
+.waw {
+    z-index: 99;
+}
 </style>
