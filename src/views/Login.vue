@@ -13,7 +13,7 @@
 
  
     <LoginForm />
-    <CardRegisterAdvise />
+    <CardRegisterAd />
   
   </div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 // @ is an alias to /src
 import LoginForm from '@/components/LoginForm.vue'
-import CardRegisterAdvise from '@/components/CardRegisterAdvise.vue'
+import CardRegisterAd from '@/components/CardRegisterAd.vue'
 
 
 
@@ -34,7 +34,7 @@ export default {
   },
   components: {
     LoginForm,
-    CardRegisterAdvise
+    CardRegisterAd
    
   }
 }

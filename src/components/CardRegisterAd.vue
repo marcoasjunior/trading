@@ -10,7 +10,7 @@
                     </v-img>
                     <v-card-actions>
                         <v-col align="center" justify="center">
-                        <v-btn block class='white--text' color="#9C27B0">Cadastre-se </v-btn>
+                        <v-btn block class='white--text' color="#9C27B0" @click="goRegister">Cadastre-se </v-btn>
                         </v-col>
                     </v-card-actions>
 
@@ -24,7 +24,12 @@
 
 <script>
 export default {
-
+    name: 'CardRegisterAd',
+    methods: {
+        goRegister() {
+            this.$router.push({ path: '/Register' })
+        }
+    },
 }
 </script>
 
