@@ -14,13 +14,15 @@
                 <v-text-field class="my-n2" v-model="social" label="Razão Social" required>
                 </v-text-field>
 
-                <v-text-field v-show="!checkbox" class="my-n2" v-model="cnpj" v-mask="'##.###.###/####-##'" label="CNPJ" required>
+                <v-text-field v-show="!checkbox" class="my-n2" v-model="cnpj" v-mask="'##.###.###/####-##'" label="CNPJ"
+                    required>
                 </v-text-field>
 
-                <v-text-field v-show="checkbox" class="my-n2" v-model="cpf" v-mask="'###.###.###-##'" label="CPF" required>
+                <v-text-field v-show="checkbox" class="my-n2" v-model="cpf" v-mask="'###.###.###-##'" label="CPF"
+                    required>
                 </v-text-field>
 
-                <v-checkbox v-model="mei" label="Empresa MEI, ME ou EPP" required></v-checkbox>
+                <v-checkbox v-model="simples" label="MEI, Microempresa ou EPP" required></v-checkbox>
 
                 <v-checkbox class="my-n4 py-0" v-model="checkbox" label="Sou Pessoa Física" required></v-checkbox>
 
@@ -37,18 +39,15 @@
 
             <v-form ref="form" v-model="valid" lazy-validation>
 
-               <v-text-field v-model="cep" v-mask="'#####-###'" type="text" name="input"
-                                    label="CEP">
-                                </v-text-field>                     
+                <v-text-field v-model="cep" v-mask="'#####-###'" type="text" name="input" label="CEP">
+                </v-text-field>
 
-                                <v-text-field v-model="address"  type="text" name="input"
-                                    label="Endereço">
-                                </v-text-field>
+                <v-text-field v-model="address" type="text" name="input" label="Endereço">
+                </v-text-field>
 
-                                <v-text-field v-model="address2" type="text" name="input"
-                                    label="Complemento" hint="Apenas se houver (apto, bloco, quadra)">
-                                </v-text-field>
-
+                <v-text-field v-model="address2" type="text" name="input" label="Complemento"
+                    hint="Apenas se houver (apto, bloco, quadra)">
+                </v-text-field>
 
                 <v-btn :disabled="!valid" color="success" class="mr-4" @click="e6 = 3">
                     Confirmar
@@ -61,32 +60,37 @@
         </v-stepper-content>
 
         <v-stepper-step :complete="e6 > 3" step="3">Usuário</v-stepper-step>
-    
+
         <v-stepper-content step="3">
 
             <v-form ref="form" v-model="valid" lazy-validation>
 
 
-                <v-text-field class="my-n0" v-model="name" label="Nome Completo" required>
+                <v-text-field class="my-n0" v-model="nameContact" label="Nome Completo" required>
                 </v-text-field>
 
-                <v-text-field v-model="number"  type="text" name="input" hint="Apenas números"
-                                    label="Telefone">
-                                </v-text-field>
+                <v-text-field v-model="number" type="text" name="input" hint="Apenas números" label="Telefone">
+                </v-text-field>
 
-                                <v-text-field v-model="email"  type="email" name="input" hint="E-mail será o LOGIN para entrar no sistema"
-                                    label="E-mail">
-                                </v-text-field>
+                <v-text-field v-model="email" type="email" name="input"
+                    hint="E-mail será o LOGIN para entrar no sistema" label="E-mail">
+                </v-text-field>
 
-                                <v-text-field v-model="email2"  type="email" name="input"
-                                    label="Confirmar E-mail">
-                                </v-text-field>
+                <v-text-field v-model="email2" type="email" name="input" label="Confirmar E-mail">                 
+                </v-text-field>
+
+                   <v-text-field v-model="password" type="password" name="input" label="Senha">
+                </v-text-field>
+
+                <v-text-field v-model="password2" type="password" name="input" label="Confirmar Senha">
+                </v-text-field>
+
 
                 <v-btn :disabled="!valid" color="success" class="mr-4" @click="e6 = 4">
                     Confirmar
                 </v-btn>
 
-                 <v-btn color="warning" @click="e6 = 2">
+                <v-btn color="warning" @click="e6 = 2">
                     Voltar
                 </v-btn>
             </v-form>
@@ -97,20 +101,14 @@
 
             <v-form ref="form" v-model="valid" lazy-validation>
 
-                <v-file-input
+                <v-file-input accept="image/png, image/jpeg, image/bmp" v-model="image" placeholder="Imagem da Empresa"
+                    prepend-icon="mdi-camera" capture></v-file-input>
 
-                    accept="image/png, image/jpeg, image/bmp"
-                    placeholder="Imagem da Empresa"
-                    prepend-icon="mdi-camera"
-                    capture
-
-                ></v-file-input>
-
-                <v-btn :disabled="!valid" color="success" class="mr-4" @click="e6 = 5">
+                <v-btn :disabled="!valid" color="success" class="mr-4" @click="submitForm">
                     Confirmar
                 </v-btn>
 
-                <v-btn color="warning" @click="resetValidation">
+                <v-btn color="warning" @click="e6 = 3">
                     Voltar
                 </v-btn>
             </v-form>
@@ -119,40 +117,72 @@
 </template>
 
 <script>
-    export default {
-        name: 'FormRegister',
-        data: () => ({
+/* eslint-disable no-console */
 
-            valid: true,
-            mei: '',
-            social: '',
-            cnpj: '',
-            name: '',
-            checkbox: false,
-            cep: '',
-            address: '',
-            address2: '',
-            e6: 1,
-            number: '',
-            email: '',
-            email2: '',
-            cpf: '',
+export default {
+    name: 'FormRegister',
+    data: () => ({
 
-        }),
+        valid: true,
+        simples: false,
+        social: '',
+        cnpj: '',
+        name: '',
+        checkbox: false,
+        cep: '',
+        address: '',
+        address2: '',
+        e6: 1,
+        number: '',
+        nameContact: '',
+        email: '',
+        email2: '',
+        cpf: '',
+        image: null,
+        password: '',
+        password2: '',
 
-        methods: {
+    }),
 
-            validate() {
-                if (this.$refs.form.validate()) {
-                    this.snackbar = true
+    methods: {
+
+        submitForm() {
+
+            const formData = new FormData()
+            formData.append('name', this.name)
+            formData.append('social', this.social)
+            formData.append('cep', this.cep)
+            formData.append('address', this.address)
+            formData.append('address2', this.address2)
+            formData.append('nameContact', this.nameContact)
+            formData.append('number', this.number)
+            formData.append('email', this.email2)
+            formData.append('file', this.image)
+            formData.append('password', this.password2)
+            this.checkbox ? formData.append('cpf', this.cpf) : formData.append('cnpj', this.cnpj)
+            if (this.simples) formData.append('simples', this.simples)
+
+            const config = {
+                header: {
+                    'Content-Type': 'multipart/form-data'
                 }
-            },
-            reset() {
-                this.$refs.form.reset()
-            },
-            resetValidation() {
-                this.$refs.form.resetValidation()
-            },
-        },
-    }
+            }
+
+            this.axios
+                .post('http://localhost:3000/api/register/company', formData, config)
+                .then((response) => {
+                    console.log(response)
+
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+
+
+
+        }
+
+
+    },
+}
 </script>
