@@ -73,7 +73,7 @@
                 <v-text-field v-model="number" type="text" name="input" hint="Apenas números" label="Telefone">
                 </v-text-field>
 
-                <v-text-field class="my-n0" v-model="username" label="Nome de Usuário" hint="Este será o seu LOGIN para entrar no sistema" required>
+                <v-text-field class="my-n0" v-model="username" label="Nome de Usuário/Login" hint="Este será o seu LOGIN para entrar no sistema" required>
                 </v-text-field>
 
                 <v-text-field v-model="email" type="email" name="input"
@@ -254,7 +254,6 @@ export default {
                     this.snackText = 'Falha no Registro! Tente novamente mais tarde.'
                     this.snackbar = true
                 })
-
 
 
         }
