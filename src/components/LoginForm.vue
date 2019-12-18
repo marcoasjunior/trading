@@ -57,15 +57,16 @@
             
             submitLogin() {
 
-                const formData = new FormData()
 
-                formData.append('username', this.login)
-                formData.append('password', this.password)
 
                 this.axios
-                    .post('http://localhost:3000/api/login', formData)
+                    .post('http://localhost:3000/api/login', {
+                        username: this.login,
+                        password: this.password
+                    })
                     .then((response) => {
-                        console.log(response)
+                        console.log(response)    
+                        this.$router.push("/Home")  
             
                     })
                     .catch(e => {

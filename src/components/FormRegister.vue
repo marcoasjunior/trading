@@ -73,14 +73,11 @@
                 <v-text-field v-model="number" type="text" name="input" hint="Apenas números" label="Telefone">
                 </v-text-field>
 
-                <v-text-field class="my-n0" v-model="username" label="Nome de Usuário/Login" hint="Este será o seu LOGIN para entrar no sistema" required>
-                </v-text-field>
-
                 <v-text-field v-model="email" type="email" name="input"
                      label="E-mail">
                 </v-text-field>
 
-                <v-text-field v-model="email2" type="email" name="input" label="Confirmar E-mail">                 
+                <v-text-field v-model="email2" type="email" name="input" label="Confirmar E-mail" hint="Será o seu LOGIN no sistema">                 
                 </v-text-field>
 
                    <v-text-field v-model="password" type="password" name="input" label="Senha">
@@ -224,9 +221,8 @@ export default {
             formData.append('address', this.address)
             formData.append('address2', this.address2)
             formData.append('nameContact', this.nameContact)
-            formData.append('username', this.username)
+            formData.append('username', this.email2)
             formData.append('number', this.number)
-            formData.append('email', this.email2)
             formData.append('file', this.image)
             formData.append('password', this.password2)
 
