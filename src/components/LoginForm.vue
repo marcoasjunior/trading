@@ -60,13 +60,14 @@
 
 
                 this.axios
-                    .post('http://localhost:3000/api/login', {
+                    .post('/login', {
                         username: this.login,
                         password: this.password
                     })
                     .then((response) => {
                         console.log(response)    
                         this.$router.push("/Home")  
+                        localStorage.token = response.data.token
             
                     })
                     .catch(e => {
