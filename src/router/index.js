@@ -4,8 +4,7 @@ import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'Login',
     component: Login
@@ -19,39 +18,42 @@ const routes = [
     path: '/Main',
     name: 'Main',
     component: () => import('../views/Main.vue'),
-    children: [
-      {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+    children: [{
+
         path: '/Dashboard',
         component: () => import('../views/Dashboard.vue')
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+
         path: '/Home',
         component: () => import('../views/Home.vue')
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+
         path: '/Trading',
-        component: () => import('../views/Trading.vue')
+        component: () => import('../views/Trading.vue'),                      
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+
+        path: '/TradingList',
+        component: () => import('../views/TradingList.vue')
+      },
+      {
+        path: '/TradingNew',
+        component: () => import('../views/TradingNew.vue')
+      },
+      {
+
         path: '/Notifications',
         component: () => import('../views/Notifications.vue')
       },
       {
-        // UserProfile will be rendered inside User's <router-view>
-        // when /user/:id/profile is matched
+
         path: '/MyData',
         component: () => import('../views/MyData.vue')
       }
-      
-]
+
+    ]
   }
 ]
 

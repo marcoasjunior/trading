@@ -1,53 +1,42 @@
 <template>
-    <v-row justify="center">
-        <v-col>
-  <v-card  class="mx-auto"
-    max-width="400">
-    <v-card-title>
-   
-
-      <v-text-field
-   
-        append-icon="mdi-magnify"
-        label="Filtro"
-        hint="Filtre os resultados"
-        autofocus
-        dense
-      ></v-text-field>
-    </v-card-title>
-  </v-card>
-        </v-col>
-        <v-expansion-panels popout>
-            <v-expansion-panel v-for="(item,i) in 5" :key="i">
-                <v-expansion-panel-header disable-icon-rotate>P.E. -
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                    <v-list flat>
-                        <v-list-item-group color="primary">
-                            <v-list-item v-for="(item, i) in items" :key="i">
-                                
-                                <v-list-item-icon>
-                                    <v-icon v-text="item.icon"></v-icon>
-                                </v-list-item-icon>
-                                
-                                <v-list-item-content>
-                                    <v-list-item-title v-text="item.text"></v-list-item-title>
-                                    
-                                    <v-subheader
-                                        v-text="item.description"
-                                        ></v-subheader>
-        
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                        </v-list-item-group>
-                    </v-list>
-                    <v-btn text color="primary">Entrar</v-btn>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-        </v-expansion-panels>
-    </v-row>
-  
+  <v-row justify="center">
+    <v-col>
+      <v-card class="mx-auto" max-width="400">
+        <v-card-title>
+          <v-text-field append-icon="mdi-magnify" label="Filtro" hint="Filtre os resultados" autofocus dense>
+          </v-text-field>
+          <v-fab-transition>
+            <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom right>
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-fab-transition>
+        </v-card-title>
+      </v-card>
+    </v-col>
+    <v-expansion-panels popout>
+      <v-expansion-panel v-for="(item,i) in 5" :key="i">
+        <v-expansion-panel-header disable-icon-rotate>P.E. -
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list flat>
+            <v-list-item-group color="primary">
+              <v-list-item v-for="(item, i) in items" :key="i">
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.text"></v-list-item-title>
+                  <v-subheader v-text="item.description"></v-subheader>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+            </v-list-item-group>
+          </v-list>
+          <v-btn text color="primary">Entrar</v-btn>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-row>
 </template>
 <script>
   export default {
@@ -59,5 +48,10 @@
         { text: 'Fase', icon: 'mdi-step-forward', description: 'Encerrado'  },
       ],
     }),
+    methods: {
+      goTradingNew() {
+        this.$router.push({ path: '/TradingNew' })
+      }
+    },
   }
 </script>

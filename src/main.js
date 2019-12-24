@@ -8,6 +8,7 @@ import VueMask from 'v-mask'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+
 Vue.use(VueAxios, axios)
 Vue.axios.defaults.baseURL = 'http://localhost:3000/api/';
 Vue.use(VueMask);
