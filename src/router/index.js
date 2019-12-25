@@ -31,7 +31,12 @@ const routes = [{
       {
 
         path: '/Trading',
-        component: () => import('../views/Trading.vue'),                      
+        component: () => import('../views/Trading.vue'),
+        children: [
+          {
+          path: '/Proposal',
+          component: () => import('../views/Proposal.vue')
+        }]                      
       },
       {
 
