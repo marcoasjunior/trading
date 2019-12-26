@@ -36,7 +36,27 @@ const routes = [{
           {
           path: '/Proposal',
           component: () => import('../views/Proposal.vue')
-        }]                      
+        },
+        {
+          path: '/Rating',
+          component: () => import('../views/Rating.vue')
+        },
+        {
+          path: '/Bidding',
+          component: () => import('../views/Bidding.vue')
+        },
+        {
+          path: '/Deal',
+          component: () => import('../views/Deal.vue')
+        },
+        {
+          path: '/Adjudication',
+          component: () => import('../views/Adjudication.vue')
+        },
+        {
+          path: '/Homologation',
+          component: () => import('../views/Homologation.vue')
+        },]                      
       },
       {
 

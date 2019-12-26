@@ -70,7 +70,7 @@
           this.tradingStep = 1
         } else {
           this.tradingStep = n + 1
-          this.$router.push('/Proposal')
+          this.$router.push('/Adjudication')
         }
       },
     },
