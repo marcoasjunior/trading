@@ -5,21 +5,32 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    titleBar: 'Home'
+    titleBar: 'Home',
+    pageAdministration: 'Users'
   },
+  
   mutations: {
 
     setTitleBar(state, newTitle) {
       state.titleBar = newTitle
 
-    }
+    },
+    setAdministrationPage(state, newPage) {
+      state.pageAdministration = newPage
+
+    },
   },
   getters: {
-    titleBar: state => state.titleBar
+    titleBar: state => state.titleBar,
+    pageAdministration: state => state.pageAdministration,
+
   },
   actions: {
     changeTitleBar(context, newTitle){
       context.commit('setTitleBar', newTitle)
+    },
+    changeAdministrationPage(context, newPage) {
+      context.commit('setAdministrationPage', newPage)
     }
 
   },

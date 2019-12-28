@@ -30,6 +30,12 @@ const routes = [{
       },
       {
 
+        path: '/Administration',
+        component: () => import('../views/Administration.vue')
+        
+      },
+      {
+
         path: '/Trading',
         component: () => import('../views/Trading.vue'),
         children: [

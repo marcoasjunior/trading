@@ -72,6 +72,7 @@
         { text: 'Timeline', route:'/Home', icon: 'mdi-home' },
         { text: 'Dashboard', route:'/Dashboard', icon: 'mdi-google-analytics' },
         { text: 'Pregão Eletrônico', route:'/TradingList', icon: 'mdi-cash-usd' },
+        { text: 'Gerenciar', route:'/Administration', icon: 'mdi-creation' },
         { text: 'Meus Dados', route:'/MyData', icon: 'mdi-account-card-details' },
         { text: 'Configurações', icon: 'mdi-settings' },
         { text: 'Histórico', icon: 'mdi-history' },
