@@ -5,7 +5,7 @@
         <v-card-title>
           <v-text-field append-icon="mdi-magnify" label="Filtro" hint="Filtre os resultados" autofocus dense>
           </v-text-field>
-          <v-fab-transition>
+          <v-fab-transition v-if="this.$store.getters.companyType == 'buyer'">
             <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom right>
               <v-icon>mdi-plus</v-icon>
             </v-btn>
