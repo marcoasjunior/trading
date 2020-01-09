@@ -1,35 +1,31 @@
 <template>
   <div>
-    <v-card flat>
-      <v-container>
-        <v-row>
+    <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="checkUsers" :search="search" item-key="name"
+        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
 
-          <v-col cols="12">
-            <v-list>
-              
-              <v-list-item v-for="user in checkUsers" :key="user.title">
-                
-                <v-list-item-content>
-                  <v-list-item-title v-text="user.name"></v-list-item-title>
-                </v-list-item-content>
+        <template v-slot:item.action="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil-outline
+          </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-trash-can-outline
+          </v-icon>
+        </template>
 
-                <v-list-item-avatar>
-                  <v-img :src="user.avatar"></v-img>                  
-                </v-list-item-avatar>
-              
-              </v-list-item>
-
-
-            </v-list>
-            <v-fab-transition>
-              <v-btn @click="modal = true" color="purple" fab dark absolute bottom right>
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-fab-transition>
-          </v-col>
-        </v-row>
-      </v-container>
+      </v-data-table>
+      <v-fab-transition>
+        <v-btn @click="modal = true" color="purple" fab absolute dark bottom left>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
     </v-card>
+
+ 
 
     <v-dialog v-model="modal">
       <v-card>
@@ -99,13 +95,37 @@ export default {
       email: '',
       email2: '',
       password: '',
-      password2: ''
+      password2: '',
+      loading: false,
+      modalEdit: false,
+      modalDelete: false,
+      search: '',
+      headers: [{
+          text: 'Usuários',
+          align: 'left',
+          value: 'name',
+        },
+        {
+          text: 'E-mail',
+          value: 'username'
+        },
+        {
+          text: 'Contato',
+          value: 'contact'
+        },
+        {
+          text: 'Ações',
+          value: 'action',
+          sortable: false
+        },
+      ],
+      items: []
 
     }
   },
   computed: {
     checkUsers() {
-      return this.$store.getters.listUsers
+      return this.$store.state.listUsers
     }
   },
   methods: {
@@ -133,6 +153,25 @@ export default {
                 .then((response) => {
                     console.log(response)
 
+                    let config = {
+            headers: {
+              Authorization: `Bearer ${localStorage.token}`
+            }
+          }
+
+      this.axios
+                .get('http://localhost:3000/api/getUsers', config)
+                .then((response) => {
+                 
+                    this.$store.dispatch('changeListUsers', response.data)
+                    
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                })
+
 
                 })
                 .catch(e => {
@@ -145,6 +184,28 @@ export default {
 
 
     },
+
+    created() {
+          let config = {
+            headers: {
+              Authorization: `Bearer ${localStorage.token}`
+            }
+          }
+
+      this.axios
+                .get('http://localhost:3000/api/getUsers', config)
+                .then((response) => {
+                    console.log(response)
+                    this.$store.dispatch('changeListUsers', response.data)
+                    
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                })
+    }
+
 }
 </script>
 

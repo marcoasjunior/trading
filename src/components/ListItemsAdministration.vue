@@ -1,37 +1,28 @@
 <template>
   <div>
-    <v-card flat v-if='!loading'>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-list>
-              <v-list-group v-for="item in items" :key="item.title" v-model="item.active" :prepend-icon="item.action"
-                no-action>
-                <template v-slot:activator>
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.title"></v-list-item-title>
-                  </v-list-item-content>
-                </template>
-                <v-list-item v-for="subItem in item.items" :key="subItem._id">
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="subItem.name"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-btn @click="editItem(subItem)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-              </v-list-group>
-            </v-list>
-            <v-fab-transition>
-              <v-btn @click="modal = true" color="purple" fab dark absolute bottom right>
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-fab-transition>
-          </v-col>
-        </v-row>
-      </v-container>
+    <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="checkList" :search="search" item-key="name" group-by="category"
+        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
+
+        <template v-slot:item.action="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil-outline
+          </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-trash-can-outline
+          </v-icon>
+        </template>
+
+      </v-data-table>
+      <v-fab-transition>
+        <v-btn @click="modal = true" color="purple" fab absolute dark bottom left>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
     </v-card>
 
     <v-dialog v-model="modalEdit">
@@ -67,7 +58,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" @click="submitFormEdit" text >Salvar</v-btn>
+          <v-btn color="blue darken-1" @click="submitFormEdit" text>Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -110,34 +101,35 @@
       </v-card>
     </v-dialog>
 
-  <v-dialog v-model="loading">
-  <v-container style="height: 400px;">
-        <v-row
-          class="fill-height"
-          align-content="center"
-          justify="center"
-        >
-          <v-col
-            class="subtitle-1 text-center"
-            cols="12"
+    <v-dialog
+      v-model="modalDelete"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">Deseja deletar o item?</v-card-title>
+
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteItem"
           >
-            Só um segundinho =)
-          </v-col>
-          <v-col cols="6">
-            <v-progress-linear
-              color="deep-purple accent-4"
-              indeterminate
-              rounded
-              height="6"
-            ></v-progress-linear>
-          </v-col>
-        </v-row>
-      </v-container>
-      </v-dialog>
+            Sim
+          </v-btn>
 
-
-
-
+          <v-btn
+            color="green darken-1"
+            text
+            @click="modalDelete = false"
+          >
+            Não
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </div>
 
@@ -146,6 +138,7 @@
 
 
 <script>
+
 export default {
   /* eslint-disable no-console */
   data() {
@@ -153,42 +146,37 @@ export default {
       modal: false,
       loading: false,
       modalEdit: false,
+      modalDelete: false,
+      search: '',
       name: '',
       idItem: '',
       description: '',
       price: 0.0,
       category: '',
-      items: [{
-          action: 'mdi-handshake',
-          title: 'Serviços',
-          items: this.$store.getters.listServices,
+      headers: [{
+          text: 'Item',
+          align: 'left',
+          value: 'name',
         },
         {
-          action: 'mdi-silverware',
-          title: 'Alimentação',
-          items: this.$store.getters.listFood,
+          text: 'Categoria',
+          value: 'category'
         },
         {
-          action: 'mdi-hanger',
-          title: 'Vestuário',
-          items: this.$store.getters.listClothes,
+          text: 'Valor de Referência',
+          value: 'price'
         },
         {
-          action: 'mdi-chair-rolling',
-          title: 'Material Durável',
-          items: this.$store.getters.listDurable,
+          text: 'Quantidade',
+          value: 'quantity'
         },
         {
-          action: 'mdi-bulldozer',
-          title: 'Obras e Reformas',
-          items: this.$store.getters.listConstruction,
+          text: 'Ações',
+          value: 'action',
+          sortable: false
         },
-        {
-          action: 'mdi-cart',
-          title: 'Outras Despesas',
-          items: this.$store.getters.listOthers,
-        },
-      ]
+      ],
+      items: []
 
     }
 
@@ -201,10 +189,64 @@ export default {
       this.modalEdit = true
       this.name = item.name
       this.description = item.description
-      this.price = parseFloat(item.price.$numberDecimal) // MUDAR
+      this.price = item.price
       this.category = item.category
-      
+
     },
+
+    deleteItem(item) {
+
+
+      if (confirm('Deseja deletar o item selecionado?')) {
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`
+          }
+        }
+
+        this.axios
+          .post('http://localhost:3000/api/delete/item', {
+            _id: item._id
+          }, config)
+          .then((response) => {
+            console.log(response)
+
+            let config = {
+              headers: {
+                Authorization: `Bearer ${localStorage.token}`
+              }
+            }
+
+            this.axios
+              .get('http://localhost:3000/api/getItems', config)
+              .then((response) => {
+                console.log(response)
+
+                // Put items
+                this.$store.dispatch('changeListItems', response.data)
+                this.loading = false
+
+              })
+              .catch(e => {
+                console.log(e)
+                this.loading = false
+
+
+              })
+          })
+          .catch(e => {
+            console.log(e)
+            this.loading = false
+
+          })
+        this.modalDelete = false
+      }
+
+      this.modalDelete = false
+
+    },
+
 
     submitFormCreate() {
 
@@ -230,6 +272,29 @@ export default {
           console.log(response)
           this.loading = false
 
+          let config = {
+              headers: {
+                Authorization: `Bearer ${localStorage.token}`
+              }
+            }
+
+            this.axios
+              .get('http://localhost:3000/api/getItems', config)
+              .then((response) => {
+                console.log(response)
+
+                // Put items
+                this.$store.dispatch('changeListItems', response.data)
+                this.loading = false
+
+              })
+              .catch(e => {
+                console.log(e)
+                this.loading = false
+
+
+              })
+
 
         })
         .catch(e => {
@@ -241,7 +306,7 @@ export default {
 
     },
 
-      submitFormEdit() {
+    submitFormEdit() {
 
       this.modal = false
       const formData = new FormData()
@@ -264,8 +329,30 @@ export default {
       this.axios
         .post('http://localhost:3000/api/edit/item', formData, config)
         .then((response) => {
-          console.log(response)         
-          this.loading = false
+          console.log(response)
+
+          let config = {
+            headers: {
+              Authorization: `Bearer ${localStorage.token}`
+            }
+          }
+
+          this.axios
+            .get('http://localhost:3000/api/getItems', config)
+            .then((response) => {
+              console.log(response)
+
+              // Put items
+              this.$store.dispatch('changeListItems', response.data)
+              this.loading = false
+
+            })
+            .catch(e => {
+              console.log(e)
+              this.loading = false
+
+
+            })
 
         })
         .catch(e => {
@@ -273,8 +360,8 @@ export default {
           this.loading = false
 
         })
-        this.modalEdit = false
-        this.loading = true
+      this.modalEdit = false
+      this.loading = true
 
 
     }
@@ -282,7 +369,14 @@ export default {
 
   },
 
+  computed: {
+    checkList() {
+      return this.$store.state.listItems
+    }
+  },
+
   created() {
+
 
     let config = {
       headers: {
@@ -294,13 +388,16 @@ export default {
       .get('http://localhost:3000/api/getItems', config)
       .then((response) => {
         console.log(response)
+        this.loading = false
 
         // Put items
         this.$store.dispatch('changeListItems', response.data)
 
+
       })
       .catch(e => {
         console.log(e)
+        this.loading = false
 
 
       })
