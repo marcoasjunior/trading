@@ -6,7 +6,7 @@
                 <v-card class="elevation-5">
                     <v-toolbar tile color="deep-purple accent-4"
       dark flat>
-                      <v-toolbar-title>Precisa se cadastrar?</v-toolbar-title> 
+                      <v-toolbar-title>Seja um TrayDer</v-toolbar-title> 
                     </v-toolbar>
                     <v-img class="font-weight-bold" height="200px"
                         src="https://res.cloudinary.com/dxblalpv2/image/upload/v1576038456/bruce-mars-FWVMhUa_wbY-unsplash_uduyin.jpg">

@@ -24,7 +24,6 @@
               <v-row>
                 <v-col cols="12">
                   <v-text-field v-model="number" label="Número do Processo" required></v-text-field>
-
                   <v-text-field v-model="notice" label="Edital" required></v-text-field>
                   <v-text-field v-model="target" label="Objeto" required></v-text-field>
                   <v-select :items="options" label="Tipo de Avaliação"></v-select>
@@ -44,57 +43,55 @@
       </v-tab-item>
       <v-tab-item :value="'mobile-tabs-5-2'">
         <v-card flat>
-          <v-container>
-            <v-row>
 
-              <v-col cols="12">
-                <v-list>
-                  <v-list-group v-for="item in items" :key="item.title" v-model="item.active"
-                    :prepend-icon="item.action" no-action>
-                    <template v-slot:activator>
-                      <v-list-item-content>
-                        <v-list-item-title v-text="item.title"></v-list-item-title>
-                      </v-list-item-content>
-                    </template>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="checkList" :search="search" item-key="name" group-by="category"
+        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
 
-                    <v-list-item v-for="subItem in item.items" :key="subItem.title">
+        <template v-slot:item.action="{ item }">
+          <v-btn class="ma-2" color="deep-purple accent-4" dark>
+          <v-icon  @click="editItem(item)">
+            mdi-plus
+          </v-icon>
+          </v-btn>
+          <v-btn class="ma-2" color="deep-purple accent-4" dark>
+          <v-icon  @click="deleteUser(item)">
+            mdi-cancel
+          </v-icon>
+          </v-btn>
+        </template>
 
-                      <v-list-item v-text="subItem.title"></v-list-item>
-                      <v-btn>
-                        <v-icon>mdi-plus</v-icon>
-                      </v-btn>
-
-                    </v-list-item>
-                  </v-list-group>
-                </v-list>
-              </v-col>
-            </v-row>
-          </v-container>
-
+      </v-data-table>
         </v-card>
       </v-tab-item>
 
       <v-tab-item :value="'mobile-tabs-5-3'">
         <v-card flat>
-          <v-container>
-            <v-row>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headersUsers" :items="checkUsers" :search="search" item-key="name"
+        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
 
-              <v-col cols="12">
-                <v-list>
-                  <v-list-item v-for="item in items" :key="item.title">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.title"></v-list-item-title>
-                    </v-list-item-content>
+        <template v-slot:item.action="{ item }">
+          <v-btn class="ma-2" color="deep-purple accent-4" dark>
+          <v-icon  @click="editItem(item)">
+            mdi-plus
+          </v-icon>
+          </v-btn>
+          <v-btn class="ma-2" color="deep-purple accent-4" dark>
+          <v-icon  @click="deleteUser(item)">
+            mdi-cancel
+          </v-icon>
+          </v-btn>
+        </template>
 
-                    <v-list-item-avatar>
-                      <v-img :src="item.avatar"></v-img>
-                    </v-list-item-avatar>
-                  </v-list-item>
-                </v-list>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
+      </v-data-table>
+    </v-card>
       </v-tab-item>
     </v-tabs-items>
     <v-btn block color="deep-purple accent-4" outlined>Criar Pregão Eletrônico</v-btn>
@@ -105,8 +102,12 @@
 import moment from 'moment'
 
   export default {
+    /* eslint-disable no-console */
     data () {
       return {
+
+        // General
+
         tabs: null,
         menu1: false,
         search: '',
@@ -118,68 +119,132 @@ import moment from 'moment'
         restrict: false,
         evaluation: '',
         options: ['Menor Preço', 'Maior Taxa', 'Menor Taxa'],
-        items: [
-          {
-            action: 'mdi-handshake',
-            title: 'Serviços',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-          {
-            action: 'mdi-silverware',
-            title: 'Alimentação',
-            items: [
-              { title: 'Breakfast & brunch' },
-              { title: 'New American' },
-              { title: 'Sushi' },
-            ],
-          },
-          {
-            action: 'mdi-hanger',
-            title: 'Vestuário',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-          {
-            action: 'mdi-chair-rolling',
-            title: 'Material Durável',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-          {
-            action: 'mdi-lead-pencil',
-            title: 'Material Consumível',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-          {
-            action: 'mdi-bulldozer',
-            title: 'Obras e Reformas',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-          {
-            action: 'mdi-cart',
-            title: 'Outras Despesas',
-            items: [
-              { title: 'List Item' },
-            ],
-          },
-        ],
+        loading: false,
 
-        
-      }
+        // Items
+
+        name: '',
+        idItem: '',
+      description: '',
+      price: 0.0,
+      category: '',
+      headers: [{
+          text: 'Item',
+          align: 'left',
+          value: 'name',
+        },
+        {
+          text: 'Categoria',
+          value: 'category'
+        },
+        {
+          text: 'Valor de Referência',
+          value: 'price'
+        },
+        {
+          text: 'Quantidade',
+          value: 'quantity'
+        },
+        {
+          text: 'Ações',
+          value: 'action',
+          sortable: false
+        },
+      ],
+      items: [],
+
+      // Users
+
+        idUser: null,
+      nameContact: '',
+      number2: null,
+      email: '',
+      email2: '',
+      password: '',
+      password2: '',
+
+      modalEdit: false,
+      modalDelete: false,
+  
+      headersUsers: [{
+          text: 'Usuário',
+          align: 'left',
+          value: 'name',
+        },
+        {
+          text: 'E-mail',
+          value: 'username'
+        },
+        {
+          text: 'Contato',
+          value: 'contact'
+        },
+        {
+          text: 'Ações',
+          value: 'action',
+          sortable: false
+        },
+      ],
+      itemsUser: []
+
+    }
+   
+      
     },
      computed: {
       computedDateFormattedMomentjs () {
         return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
       },
-  }
+ 
+    checkList() {
+      return this.$store.state.listItems
+    },
+
+    checkUsers() {
+      return this.$store.state.listUsers
+    }
+  
+  },
+   created() {
+
+
+    let config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    }
+
+    this.axios
+      .get('http://localhost:3000/api/getItems', config)
+      .then((response) => {
+        console.log(response)
+        this.loading = false
+
+        // Put items
+        this.$store.dispatch('changeListItems', response.data)
+
+
+      })
+      .catch(e => {
+        console.log(e)
+        this.loading = false
+
+
+      })
+
+      this.axios
+                .get('http://localhost:3000/api/getUsers', config)
+                .then((response) => {
+                    console.log(response)
+                    this.$store.dispatch('changeListUsers', response.data)
+                    
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                })
+   }
   }
 </script>
 

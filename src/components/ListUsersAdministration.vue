@@ -154,7 +154,7 @@ export default {
       modalDelete: false,
       search: '',
       headers: [{
-          text: 'Usuários',
+          text: 'Usuário',
           align: 'left',
           value: 'name',
         },

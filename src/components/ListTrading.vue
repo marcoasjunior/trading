@@ -1,57 +1,116 @@
 <template>
-  <v-row justify="center">
-    <v-col>
-      <v-card class="mx-auto" max-width="400">
-        <v-card-title>
-          <v-text-field append-icon="mdi-magnify" label="Filtro" hint="Filtre os resultados" autofocus dense>
-          </v-text-field>
-          <v-fab-transition v-if="this.$store.getters.companyType == 'buyer'">
-            <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom right>
+<div>
+
+    <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers" :items="checkList" :search="search" item-key="name" group-by="category"
+        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
+
+        <template v-slot:item.fase="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil-outline
+          </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-trash-can-outline
+          </v-icon>
+        </template>
+
+      </v-data-table>
+          <!-- <v-fab-transition v-if="this.$store.getters.companyType == 'buyer'"> -->
+            <v-fab-transition>
+            <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom left>
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-fab-transition>
-        </v-card-title>
-      </v-card>
-    </v-col>
-    <v-expansion-panels popout>
-      <v-expansion-panel v-for="(item,i) in 5" :key="i">
-        <v-expansion-panel-header disable-icon-rotate>P.E. -
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-list flat>
-            <v-list-item-group color="primary">
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-icon>
-                  <v-icon v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.text"></v-list-item-title>
-                  <v-subheader v-text="item.description"></v-subheader>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider></v-divider>
-            </v-list-item-group>
-          </v-list>
-          <v-btn text color="primary">Entrar</v-btn>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </v-row>
+    </v-card>
+
+
+
+</div>
 </template>
 <script>
+/* eslint-disable no-console */
   export default {
-    data: () => ({
-      item: 1,
-      items: [
-        { text: 'Objeto', icon: 'mdi-package-variant-closed', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' },
-        { text: 'Comprador', icon: 'mdi-account', description: 'SESI'  },
-        { text: 'Fase', icon: 'mdi-step-forward', description: 'Encerrado'  },
+    data() {
+    return {
+      modal: false,
+      loading: false,
+      modalEdit: false,
+      modalDelete: false,
+      search: '',
+      name: '',
+      idItem: '',
+      description: '',
+      price: 0.0,
+      category: '',
+      headers: [{
+          text: 'Numeração',
+          align: 'left',
+          value: 'number',
+        },
+        {
+          text: 'Objeto',
+          value: 'target'
+        },
+        {
+          text: 'Final das Propostas',
+          value: 'proposal'
+        },
+        {
+          text: 'Quantidade',
+          value: 'quantity'
+        },
+        {
+          text: 'Fase',
+          value: 'step',
+        },
+        {
+          text: 'Ações',
+          value: 'action',
+          sortable: false
+        },
+        
       ],
-    }),
+      items: []
+
+    }
+
+  },
     methods: {
       goTradingNew() {
         this.$router.push({ path: '/TradingNew' })
       }
     },
+
+    created() {
+
+
+    let config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
+    }
+
+    this.axios
+      .get('http://localhost:3000/api/getTrading', config)
+      .then((response) => {
+        console.log(response)
+        this.loading = false
+
+        // Put items
+        this.$store.dispatch('changeListTranding', response.data)
+
+
+      })
+      .catch(e => {
+        console.log(e)
+        this.loading = false
+
+
+      })
+  },
   }
 </script>
