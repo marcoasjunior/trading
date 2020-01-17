@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-card>
 
     <v-tabs v-model="tabs" fixed-tabs>
@@ -26,7 +27,7 @@
                   <v-text-field v-model="number" label="Número do Processo" required></v-text-field>
                   <v-text-field v-model="notice" label="Edital" required></v-text-field>
                   <v-text-field v-model="target" label="Objeto" required></v-text-field>
-                  <v-select :items="options" label="Tipo de Avaliação"></v-select>
+                  <v-select v-model="evaluation" :items="options" label="Tipo de Avaliação"></v-select>
                   <v-text-field :value="computedDateFormattedMomentjs" clearable label="Agendar"
                     @click:clear="date = null" @focus="show = true"></v-text-field>
 
@@ -44,87 +45,71 @@
       <v-tab-item :value="'mobile-tabs-5-2'">
         <v-card flat>
 
-      <v-card-title>
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
-        </v-text-field>
-      </v-card-title>
-      <v-data-table :headers="headers" :items="checkList" :search="search" item-key="name" group-by="category"
-        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
+          <v-card-title>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+            </v-text-field>
+          </v-card-title>
+          <v-data-table v-model="selectedItems" show-select :headers="headers" :items="checkList" :search="search"
+            item-key="name" group-by="category" class="elevation-1" :loading="loading"
+            loading-text="Estamos quase lá =)">
 
-        <template v-slot:item.action="{ item }">
-          <v-btn class="ma-2" color="deep-purple accent-4" dark>
-          <v-icon  @click="editItem(item)">
-            mdi-plus
-          </v-icon>
-          </v-btn>
-          <v-btn class="ma-2" color="deep-purple accent-4" dark>
-          <v-icon  @click="deleteUser(item)">
-            mdi-cancel
-          </v-icon>
-          </v-btn>
-        </template>
+            <template v-slot:item.quantity="props">
+              <v-text-field class="d-inline-flex pa-1" :return-value.sync="props.item.quantity"
+                v-model="props.item.quantity" label="Editar Quantidade" single-line>
+              </v-text-field>
+            </template>
 
-      </v-data-table>
+          </v-data-table>
         </v-card>
       </v-tab-item>
 
       <v-tab-item :value="'mobile-tabs-5-3'">
         <v-card flat>
-      <v-card-title>
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
-        </v-text-field>
-      </v-card-title>
-      <v-data-table :headers="headersUsers" :items="checkUsers" :search="search" item-key="name"
-        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
+          <v-card-title>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
+            </v-text-field>
+          </v-card-title>
+          <v-data-table v-model="selectedUsers" show-select :headers="headersUsers" :items="checkUsers" :search="search"
+            item-key="name" class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
 
-        <template v-slot:item.action="{ item }">
-          <v-btn class="ma-2" color="deep-purple accent-4" dark>
-          <v-icon  @click="editItem(item)">
-            mdi-plus
-          </v-icon>
-          </v-btn>
-          <v-btn class="ma-2" color="deep-purple accent-4" dark>
-          <v-icon  @click="deleteUser(item)">
-            mdi-cancel
-          </v-icon>
-          </v-btn>
-        </template>
-
-      </v-data-table>
-    </v-card>
+          </v-data-table>
+        </v-card>
       </v-tab-item>
     </v-tabs-items>
-    <v-btn block color="deep-purple accent-4" outlined>Criar Pregão Eletrônico</v-btn>
+    <v-container>
+      <v-btn v-if="tabs == 'mobile-tabs-5-3'" block color="deep-purple accent-4" @click="showModal" dark>Revisar Pregão Eletrônico</v-btn>
+    </v-container>
   </v-card>
+
+  <ModalTradingNew />
+
+
+</div>
 </template>
 
 <script>
 import moment from 'moment'
+import ModalTradingNew from '../components/ModalTradingNew'
 
-  export default {
-    /* eslint-disable no-console */
-    data () {
-      return {
+export default {
+  /* eslint-disable no-console */
+  data() {
+    return {
 
-        // General
+      // General
 
-        tabs: null,
-        menu1: false,
-        search: '',
-        number: null,
-        notice: null,
-        target: null,
-        date: new Date().toISOString().substr(0, 10),
-        show: false,
-        restrict: false,
-        evaluation: '',
-        options: ['Menor Preço', 'Maior Taxa', 'Menor Taxa'],
-        loading: false,
+      tabs: null,
+      menu1: false,
+      search: '',
+      show: false,
+      options: ['Menor Preço', 'Maior Taxa', 'Menor Taxa'],
+      loading: false,
 
-        // Items
+      // Items
 
-        name: '',
-        idItem: '',
+      // selectedItems: [],
+      name: '',
+      idItem: '',
       description: '',
       price: 0.0,
       category: '',
@@ -145,27 +130,19 @@ import moment from 'moment'
           text: 'Quantidade',
           value: 'quantity'
         },
-        {
-          text: 'Ações',
-          value: 'action',
-          sortable: false
-        },
+
       ],
       items: [],
 
       // Users
 
-        idUser: null,
+      idUser: null,
       nameContact: '',
       number2: null,
       email: '',
       email2: '',
       password: '',
       password2: '',
-
-      modalEdit: false,
-      modalDelete: false,
-  
       headersUsers: [{
           text: 'Usuário',
           align: 'left',
@@ -179,33 +156,96 @@ import moment from 'moment'
           text: 'Contato',
           value: 'contact'
         },
-        {
-          text: 'Ações',
-          value: 'action',
-          sortable: false
-        },
       ],
       itemsUser: []
 
     }
-   
-      
+
+
+  },
+  methods: {
+    showModal() {
+      this.$store.dispatch('changeModalTradingNew', true)
+    }
+    
+  },
+  computed: {
+    computedDateFormattedMomentjs() {
+      return this.date ? moment(this.$store.state.tradingConfig.date).format('DD/MM/YYYY') : ''
     },
-     computed: {
-      computedDateFormattedMomentjs () {
-        return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
-      },
- 
+
     checkList() {
       return this.$store.state.listItems
     },
 
     checkUsers() {
       return this.$store.state.listUsers
-    }
-  
+    },
+
+    selectedItems: {
+      get() {
+        return this.$store.getters.selectedItems
+      },
+      set(items) {
+        this.$store.dispatch('changeSelectedItems', items)
+      }
+
+
+    },
+
+    selectedUsers: {
+      get() {
+        return this.$store.getters.selectedUsers
+      },
+      set(users) {
+        this.$store.dispatch('changeSelectedUsers', users)
+      }
+    },
+    number: {
+      get() {
+        return this.$store.getters.selectedUsers
+      },
+      set(number) {
+        this.$store.dispatch('changeTradingConfig', {number: number})
+      }
+    },
+    notice: {
+      get() {
+        return this.$store.getters.selectedUsers
+      },
+      set(notice) {
+        this.$store.dispatch('changeTradingConfig', {notice: notice})
+      }
+    },
+    target: {
+      get() {
+        return this.$store.getters.selectedUsers
+      },
+      set(target) {
+        this.$store.dispatch('changeTradingConfig', {target: target})
+      }
+    },
+    evaluation: {
+      get() {
+        return this.$store.getters.selectedUsers
+      },
+      set(evaluation) {
+        this.$store.dispatch('changeTradingConfig', {evaluation: evaluation})
+      }
+    },
+    date: {
+      get() {
+        return this.$store.getters.selectedUsers  
+        // new Date().toISOString().substr(0, 10),
+      },
+      set(date) {
+        this.$store.dispatch('changeTradingConfig', {date: date})
+      }
+    },
+
+
   },
-   created() {
+  created() {
 
 
     let config = {
@@ -232,22 +272,29 @@ import moment from 'moment'
 
       })
 
-      this.axios
-                .get('http://localhost:3000/api/getUsers', config)
-                .then((response) => {
-                    console.log(response)
-                    this.$store.dispatch('changeListUsers', response.data)
-                    
+    this.axios
+      .get('http://localhost:3000/api/getUsers', config)
+      .then((response) => {
+        console.log(response)
+        this.$store.dispatch('changeListUsers', response.data)
 
-                })
-                .catch(e => {
-                    console.log(e)
 
-                })
-   }
+      })
+      .catch(e => {
+        console.log(e)
+
+      })
+  },
+  components: {
+    ModalTradingNew
   }
+}
 </script>
 
-<style>
+<style scoped>
+
+.button1 {
+  margin-bottom: 15px
+}
 
 </style>
