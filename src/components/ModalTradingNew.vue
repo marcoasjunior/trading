@@ -55,23 +55,64 @@
           </v-simple-table>
         <v-divider></v-divider>
           <v-subheader>Configurações</v-subheader>
-           <v-simple-table dense>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">Nome</th>
-                  <th class="text-left">Valor</th>       
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in checkSelectedUsers" :key="item.name">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.username }}</td>
-            
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
+           <v-list dense>
+      
+              <v-list-item-group color="primary">
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-file-document-box-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title ref="number"> {{checkTradingConfigNumber}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-file-document-box-multiple-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigNotice}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-package-variant</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigTarget}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-file-document-box-search-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigEvaluation}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-calendar</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigStartDate}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-calendar-clock</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigTime}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
         <v-divider></v-divider>
       </v-card>
     </v-dialog>
@@ -80,6 +121,7 @@
 
 <script>
   export default {
+       /* eslint-disable no-console */
     data () {
       return {
         dialog: false,
@@ -97,6 +139,30 @@
     },
       checkSelectedUsers() {
         return this.$store.getters.selectedUsers
+    },
+      checkTradingConfigNumber() {
+        return this.$store.getters.tradingConfigNumber
+
+    },
+      checkTradingConfigNotice() {
+        return this.$store.getters.tradingConfigNotice
+
+    },
+      checkTradingConfigEvaluation() {
+        return this.$store.getters.tradingConfigEvaluation
+
+    },
+      checkTradingConfigStartDate() {
+        return this.$store.getters.tradingConfigStartDate
+
+    },
+      checkTradingConfigTarget() {
+        return this.$store.getters.tradingConfigTarget
+
+    },
+      checkTradingConfigTime() {
+        return this.$store.getters.tradingConfigTime
+
     },
     },
     methods: {
