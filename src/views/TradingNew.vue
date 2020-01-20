@@ -28,20 +28,36 @@
                     <v-text-field v-model="notice" label="Edital" required></v-text-field>
                     <v-text-field v-model="target" label="Objeto" required></v-text-field>
                     <v-select v-model="evaluation" :items="options" label="Tipo de Avaliação"></v-select>
-                    <v-text-field :value="computedDateFormattedMomentjs" readonly clearable label="Agendar"
-                      @click:clear="date = null" @focus="show = true"></v-text-field>
+                    <v-text-field :value="computedDateFormattedMomentjs" readonly clearable label="Agendar Início"
+                      @click:clear="date1 = null" @focus="show1 = true"></v-text-field>
 
-                    <v-date-picker v-show="show" v-model="date" @change="show = false" locale="pt-BR" full-width>
+                    <v-date-picker v-show="show1" v-model="date1" @change="show1 = false" locale="pt-BR" full-width>
                     </v-date-picker>
 
-                    <v-menu ref="menu" v-model="menu2" :close-on-content-click="false" :nudge-right="40"
-                      :return-value.sync="time" transition="scale-transition" offset-y max-width="290px"
+                    <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40"
+                      :return-value.sync="time1" transition="scale-transition" offset-y max-width="290px"
                       min-width="290px">
                       <template v-slot:activator="{ on }">
-                        <v-text-field v-model="time" label="Horário" readonly v-on="on"></v-text-field>
+                        <v-text-field v-model="time1" label="Horário Início" readonly v-on="on"></v-text-field>
                       </template>
-                      <v-time-picker v-if="menu2" v-model="time" full-width format="24hr"
-                        @click:minute="$refs.menu.save(time)"></v-time-picker>
+                      <v-time-picker v-if="menu1" v-model="time1" full-width format="24hr"
+                        @click:minute="$refs.menu1.save(time1)"></v-time-picker>
+                    </v-menu>
+
+                    <v-text-field :value="computedDateFormattedMomentjs2" readonly clearable label="Agendar Fim de Propostas"
+                      @click:clear="date2 = null" @focus="show2 = true"></v-text-field>
+
+                    <v-date-picker v-show="show2" v-model="date2" @change="show2 = false" locale="pt-BR" full-width>
+                    </v-date-picker>
+
+                    <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                      :return-value.sync="time2" transition="scale-transition" offset-y max-width="290px"
+                      min-width="290px">
+                      <template v-slot:activator="{ on }">
+                        <v-text-field v-model="time2" label="Horário Fim de Propostas" readonly v-on="on"></v-text-field>
+                      </template>
+                      <v-time-picker v-if="menu2" v-model="time2" full-width format="24hr"
+                        @click:minute="$refs.menu2.save(time2)"></v-time-picker>
                     </v-menu>
 
 
@@ -113,7 +129,8 @@
         tabs: null,
         menu1: false,
         search: '',
-        show: false,
+        show1: false,
+        show2: false,
         options: ['Menor Preço', 'Maior Taxa', 'Menor Taxa'],
         loading: false,
         menu2: false,
@@ -186,6 +203,10 @@
         return this.$store.getters.tradingConfigStartDate ? moment(this.$store.getters.tradingConfigStartDate).format(
           'DD/MM/YYYY') : ''
       },
+      computedDateFormattedMomentjs2() {
+        return this.$store.getters.tradingConfigEndDate ? moment(this.$store.getters.tradingConfigEndDate).format(
+          'DD/MM/YYYY') : ''
+      },
 
       checkList() {
         return this.$store.state.listItems
@@ -252,7 +273,7 @@
           })
         }
       },
-      date: {
+      date1: {
         get() {
           return this.$store.getters.tradingConfigStartDate
 
@@ -263,7 +284,7 @@
           })
         }
       },
-      time: {
+      time1: {
         get() {
           return this.$store.getters.tradingConfigTime
 
@@ -271,6 +292,28 @@
         set(time) {
           this.$store.dispatch('changeTradingConfig', {
             time: time
+          })
+        },
+      },
+      date2: {
+        get() {
+          return this.$store.getters.tradingConfigEndDate
+
+        },
+        set(date) {
+          this.$store.dispatch('changeTradingConfig', {
+            endDate: date
+          })
+        }
+      },
+      time2: {
+        get() {
+          return this.$store.getters.tradingConfigEndTime
+
+        },
+        set(time) {
+          this.$store.dispatch('changeTradingConfig', {
+            endTime: time
           })
         },
       },

@@ -17,9 +17,11 @@ export default new Vuex.Store({
       number: null,
       notice: null,
       target: '',
-      evaluation: String,
+      evaluation: '',
       startDate: new Date().toISOString().substr(0, 10),
-      time: null
+      endDate: new Date().toISOString().substr(0, 10),
+      time: null,
+      endTime: null
 
     }
 
@@ -66,6 +68,8 @@ export default new Vuex.Store({
       else if (newConfig.target) state.tradingConfig.target = newConfig.target
       else if (newConfig.evaluation) state.tradingConfig.evaluation = newConfig.evaluation
       else if (newConfig.time) state.tradingConfig.time = newConfig.time
+      else if (newConfig.endTime) state.tradingConfig.endTime = newConfig.endTime
+      else if (newConfig.endDate) state.tradingConfig.endDate = newConfig.endDate
       else state.tradingConfig.startDate = newConfig.date
 
     },
@@ -84,7 +88,9 @@ export default new Vuex.Store({
     tradingConfigTarget: state => state.tradingConfig.target,
     tradingConfigEvaluation: state => state.tradingConfig.evaluation,
     tradingConfigStartDate: state => state.tradingConfig.startDate,
+    tradingConfigEndDate: state => state.tradingConfig.endDate,
     tradingConfigTime: state => state.tradingConfig.time,
+    tradingConfigEndTime: state => state.tradingConfig.endTime,
     modalTradingNew: state => state.modalTradingNew
 
   },

@@ -11,7 +11,7 @@
           <v-toolbar-title>Revisão</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark text @click="closeModal">Finalizar</v-btn>
+            <v-btn dark text @click="submitTrading">Finalizar</v-btn>
           </v-toolbar-items>
         </v-toolbar>
        
@@ -96,19 +96,38 @@
                 <v-divider> </v-divider>
                 <v-list-item>
                   <v-list-item-icon>
-                    <v-icon>mdi-calendar</v-icon>
+                    <v-icon color="green">mdi-calendar</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title>{{checkTradingConfigStartDate}}</v-list-item-title>
+                    <v-list-item-title>{{computedDateFormattedMomentjs}}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-divider> </v-divider>
-                <v-list-item>
+       <v-list-item>
                   <v-list-item-icon>
-                    <v-icon>mdi-calendar-clock</v-icon>
+                    <v-icon color="green">mdi-calendar-clock</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
                     <v-list-item-title>{{checkTradingConfigTime}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>       
+                <v-divider> </v-divider>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="red">mdi-calendar</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{computedDateFormattedMomentjs2}}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                 <v-divider> </v-divider>
+
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon color="red">mdi-calendar-clock</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{checkTradingConfigEndTime}}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -120,9 +139,11 @@
 </template>
 
 <script>
+  import moment from 'moment'
   export default {
        /* eslint-disable no-console */
     data () {
+
       return {
         dialog: false,
         notifications: false,
@@ -131,6 +152,7 @@
       }
     },
     computed: {
+
       checkModal() {
         return this.$store.getters.modalTradingNew
       },
@@ -152,10 +174,14 @@
         return this.$store.getters.tradingConfigEvaluation
 
     },
-      checkTradingConfigStartDate() {
-        return this.$store.getters.tradingConfigStartDate
-
-    },
+      computedDateFormattedMomentjs() {
+        return this.$store.getters.tradingConfigStartDate ? moment(this.$store.getters.tradingConfigStartDate).format(
+          'DD/MM/YYYY') : ''
+      },
+      computedDateFormattedMomentjs2() {
+        return this.$store.getters.tradingConfigEndDate ? moment(this.$store.getters.tradingConfigEndDate).format(
+          'DD/MM/YYYY') : ''
+      },
       checkTradingConfigTarget() {
         return this.$store.getters.tradingConfigTarget
 
@@ -164,11 +190,60 @@
         return this.$store.getters.tradingConfigTime
 
     },
+      checkTradingConfigEndTime() {
+        return this.$store.getters.tradingConfigEndTime
+
+    },
     },
     methods: {
+
       closeModal() {
         this.$store.dispatch('changeModalTradingNew', false)
-      }
+      },
+
+      submitTrading() {
+
+            const formData = new FormData()
+            const config = {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${localStorage.token}`
+              }
+            }
+
+            // get IDs
+
+            const UsersId = this.$store.getters.selectedUsers.map( e => {
+              return e._id
+            })
+            const ItemsId = this.$store.getters.selectedItems.map( e => {
+              return e._id
+            })
+
+            //form
+
+            formData.append('number', this.checkTradingConfigNumber)
+            formData.append('notice', this.checkTradingConfigNotice)
+            formData.append('evaluation', this.checkTradingConfigEvaluation)
+            formData.append('startDate', this.computedDateFormattedMomentjs)
+            formData.append('endDate', this.computedDateFormattedMomentjs2)
+            formData.append('target', this.checkTradingConfigTarget)
+            formData.append('time', this.checkTradingConfigTime)
+            formData.append('endTime', this.checkTradingConfigEndTime)
+            formData.append('users', UsersId)
+            formData.append('items', ItemsId)
+
+            this.axios
+                .post('http://localhost:3000/api/register/trading', formData, config)
+                .then((response) => {
+                    console.log(response)
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                })
+        }
     },
   }
 </script>
