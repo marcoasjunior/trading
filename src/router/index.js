@@ -39,8 +39,9 @@ const routes = [{
         path: '/Trading',
         component: () => import('../views/Trading.vue'),
         children: [
+
           {
-          path: '/Proposal',
+          path: '/Proposal/:id',
           component: () => import('../views/Proposal.vue')
         },
         {
