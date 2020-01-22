@@ -1,38 +1,40 @@
 <template>
-<div>
+  <div>
 
     <v-card>
       <v-card-title>
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
         </v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="checkTrading" :search="search" item-key="name" 
-        class="elevation-1" :loading="loading" loading-text="Estamos quase lá =)">
+      <v-data-table :headers="headers" :items="checkTrading" :search="search" item-key="name" class="elevation-1"
+        :loading="loading" loading-text="Estamos quase lá =)">
 
-        <template v-slot:item.action="{ item }">
+        <template v-slot:item.action="{ item }" v-if="this.$store.getters.companyType == 'buyer'">
           <v-icon class="mr-2" @click="adminTrading(item)">
             mdi-settings-transfer-outline
           </v-icon>
-          <v-icon class="mr-2"  @click="confirmCancel(item)">
+          <v-icon class="mr-2" @click="confirmCancel(item)">
             mdi-cancel
           </v-icon>
-          <v-icon class="mr-2"  @click="goTrading(item)">
+        </template>
+
+        <template v-slot:item.action="{ item }" v-else>        
+          <v-icon class="mr-2" @click="goTrading(item)">
             mdi-login-variant
           </v-icon>
         </template>
 
       </v-data-table>
-          <!-- <v-fab-transition v-if="this.$store.getters.companyType == 'buyer'"> -->
-            <v-fab-transition>
-            <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom left>
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </v-fab-transition>
+      <v-fab-transition v-if="this.$store.getters.companyType == 'buyer'">
+        <v-btn @click="goTradingNew" color="purple" fab dark absolute bottom left>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
     </v-card>
 
 
 
-</div>
+  </div>
 </template>
 <script>
 /* eslint-disable no-console */
@@ -142,6 +144,22 @@
 
 
         })
+
+      this.axios
+                .get('http://localhost:3000/api/profile', this.config)
+                .then((response) => {
+                    console.log(response)
+                    
+                    // Put type of Company
+                    this.$store.dispatch('changeCompanyType', response.data.type)
+
+                })
+                .catch(e => {
+                    console.log(e)
+                    this.$router.push({ path: '/' })
+
+                })
+      
     },
   }
 </script>

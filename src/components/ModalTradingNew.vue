@@ -135,7 +135,39 @@
         <v-divider></v-divider>
       </v-card>
     </v-dialog>
+
+<v-snackbar
+      v-model="snackbar"
+      :timeout="2000"
+    >
+      Criado com sucesso
+      <v-btn
+        color="blue"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+
+    <v-snackbar
+      v-model="snackbar2"
+      :timeout="2000"
+    >
+      Falha ao criar
+      <v-btn
+        color="blue"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+
+
   </v-row>
+
+  
 </template>
 
 <script>
@@ -149,6 +181,8 @@
         notifications: false,
         sound: true,
         widgets: false,
+        snackbar: false,
+        snackbar2: false
       }
     },
     computed: {
@@ -230,6 +264,7 @@
             formData.append('target', this.checkTradingConfigTarget)
             formData.append('time', this.checkTradingConfigTime)
             formData.append('endTime', this.checkTradingConfigEndTime)
+            formData.append('step', 'proposal')
             formData.append('users', UsersId)
             formData.append('items', ItemsId)
 
@@ -237,10 +272,14 @@
                 .post('http://localhost:3000/api/register/trading', formData, config)
                 .then((response) => {
                     console.log(response)
+                    this.snackbar = true
+                    this.$store.dispatch('changeModalTradingNew', false)
 
                 })
                 .catch(e => {
                     console.log(e)
+                    this.snackbar2 = true
+                    this.$store.dispatch('changeModalTradingNew', false)
 
                 })
         }
