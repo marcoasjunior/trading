@@ -11,6 +11,7 @@ export default new Vuex.Store({
     listUsers: [],
     listItems: [],
     listTrading: [],
+    listTradingItems: [],
     selectedItems: [],
     selectedUsers: [],
     modalTradingNew: false,
@@ -54,6 +55,10 @@ export default new Vuex.Store({
       state.listTrading = newList
 
     },
+    setListTradingItems(state, newList) {
+      state.listTradingItems = newList
+
+    },
     setSelectedItems(state, newList) {
       state.selectedItems = newList
 
@@ -86,6 +91,7 @@ export default new Vuex.Store({
     listUsers: state => state.listUsers,
     listItems: state => state.listItems,
     listTrading: state => state.listTrading,
+    listTradingItems: state => state.listTradingItems,
     selectedItems: state => state.selectedItems,
     selectedUsers: state => state.selectedUsers,
     tradingConfig: state => state.tradingConfig,
@@ -117,8 +123,12 @@ export default new Vuex.Store({
       context.commit('setListItems', newItems)
 
     },
-    changeListTranding(context, newItems) {
+    changeListTrading(context, newItems) {
       context.commit('setListTrading', newItems)
+
+    },
+    changeListTradingItems(context, newItems) {
+      context.commit('setListTradingItems', newItems)
 
     },
     changeSelectedItems(context, newItems) {

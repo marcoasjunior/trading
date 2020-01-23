@@ -134,7 +134,7 @@
           this.loading = false
 
           // Put items
-          this.$store.dispatch('changeListTranding', response.data)
+          this.$store.dispatch('changeListTrading', response.data)
 
 
         })
