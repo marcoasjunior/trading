@@ -43,7 +43,7 @@
                   <v-list-item-content>Referência:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ item.price}}</v-list-item-content>
                 </v-list-item>
-              <v-form>
+              <v-form :ref="item._id">
                   <v-text-field
                     
                     label="Proposta Por Unidade"
@@ -57,10 +57,13 @@
                     auto-grow
                     prepend-icon="mdi-clipboard-text-outline"
                     hint="Caso seja necessário"
-                    rows="1"
+                    rows="2"
                     row-height="15"
                     ></v-textarea>
+
+                  <v-btn block @click="submitProposal(item._id)" > Enviar </v-btn>
               </v-form>
+
               </v-list>
 
             </v-card>
@@ -78,11 +81,41 @@
       expand: false,
       config: {
         headers: {
-          Authorization: `Bearer ${localStorage.token}`
+          Authorization: `Bearer ${localStorage.token}`,
+          'Content-Type': 'multipart/form-data'
         }
       },
       
     }),
+    methods: {
+      submitProposal(id) {
+
+        console.log(this.$refs[id][0].$el.elements[0].value)
+        console.log(this.$refs[id][0].$el.elements[1].value)
+
+        let formData = new FormData()
+          formData.append('id', id)
+          formData.append('bid', this.$refs[id][0].$el.elements[0].value)
+          formData.append('obs', this.$refs[id][0].$el.elements[1].value)
+          formData.append('type', 'proposal')          
+
+        this.axios
+          .post(`http://localhost:3000/api/setProposal`, formData, this.config)
+          .then((response) => {
+            console.log(response)
+
+          })
+          .catch(e => {
+            console.log(e)
+
+        })
+
+
+
+
+
+      }
+    },
 
     computed: {
         getItems() {
@@ -91,6 +124,8 @@
     },
 
     created() {
+
+      
    
       this.axios
         .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
