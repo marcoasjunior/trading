@@ -28,7 +28,7 @@
               
               <v-switch
                 :input-value="isExpanded(item)"
-                :label="isExpanded(item) ? 'Cancelar' : 'Fornecer'"
+                :label="isExpanded(item) ? '' : 'Fornecer'"
                 class="pl-4 mt-0"
                 @change="(v) => expand(item, v)"
               ></v-switch>
@@ -41,7 +41,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>Referência:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.price}}</v-list-item-content>
+                  <v-list-item-content class="align-end">$ {{ item.price.$numberDecimal}}</v-list-item-content>
                 </v-list-item>
               <v-form :ref="item._id">
                   <v-text-field
@@ -90,17 +90,15 @@
     methods: {
       submitProposal(id) {
 
-        console.log(this.$refs[id][0].$el.elements[0].value)
-        console.log(this.$refs[id][0].$el.elements[1].value)
-
         let formData = new FormData()
-          formData.append('id', id)
+          formData.append('idItem', id)
+          formData.append('idTrading', this.$route.params.id)
           formData.append('bid', this.$refs[id][0].$el.elements[0].value)
           formData.append('obs', this.$refs[id][0].$el.elements[1].value)
           formData.append('type', 'proposal')          
 
         this.axios
-          .post(`http://localhost:3000/api/setProposal`, formData, this.config)
+          .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
           .then((response) => {
             console.log(response)
 
