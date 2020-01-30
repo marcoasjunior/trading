@@ -12,6 +12,7 @@ export default new Vuex.Store({
     listItems: [],
     listTrading: [],
     listTradingItems: [],
+    proposalItems: [],
     selectedItems: [],
     selectedUsers: [],
     modalTradingNew: false,
@@ -71,6 +72,10 @@ export default new Vuex.Store({
       state.modalTradingNew = newState
 
     },
+    setProposalItems(state, newList) {
+      state.proposalItems = newList
+
+    },
     setTradingConfig(state, newConfig) {
 
       if (newConfig.number) state.tradingConfig.number = newConfig.number
@@ -92,6 +97,7 @@ export default new Vuex.Store({
     listItems: state => state.listItems,
     listTrading: state => state.listTrading,
     listTradingItems: state => state.listTradingItems,
+    proposalItems: state => state.proposalItems,
     selectedItems: state => state.selectedItems,
     selectedUsers: state => state.selectedUsers,
     tradingConfig: state => state.tradingConfig,
@@ -144,6 +150,9 @@ export default new Vuex.Store({
     },
     changeTradingConfig(context, newConfig) {
       context.commit('setTradingConfig', newConfig)
+    },
+    changeProposalItems(context, newItems) {
+      context.commit('setProposalItems', newItems)
     },
   },
   modules: {}

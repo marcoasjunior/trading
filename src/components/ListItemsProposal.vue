@@ -142,6 +142,20 @@
 
 
         })
+
+         this.axios
+                .get('http://localhost:3000/api/profile', this.config)
+                .then((response) => {
+                    console.log(response)
+                    
+                    // Put type of Company
+                    this.$store.dispatch('changeCompanyType', response.data.type)
+
+                })
+                .catch(e => {
+                    console.log(e)
+
+                })
   }
   }
 </script>

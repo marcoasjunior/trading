@@ -45,7 +45,7 @@ const routes = [{
           component: () => import('../views/Proposal.vue')
         },
         {
-          path: '/Rating',
+          path: '/Rating/:id',
           component: () => import('../views/Rating.vue')
         },
         {

@@ -40,7 +40,8 @@
           {
             step: 'proposal',
             number: 1,
-            name: 'Propostas'
+            name: 'Propostas',
+
           },
           {
             step: 'rating',
@@ -84,7 +85,7 @@
       },
       nextStep (n) {
           this.tradingStep = n + 1
-          // this.$router.push('/Adjudication')
+         if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
         
       },
       backStep (n) {
