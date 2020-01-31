@@ -49,9 +49,9 @@
             name: 'Classificação'
           },
           {
-            step: 'proposal',
+            step: 'bidding',
             number: 3,
-            name: 'Proposta'
+            name: 'Disputa de Lances'
           },
           {
             step: 'proposal',
@@ -86,10 +86,13 @@
       nextStep (n) {
           this.tradingStep = n + 1
          if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
+         if (this.tradingStep === 3) this.$router.push(`/Bidding/${this.$route.params.id}`)
         
       },
       backStep (n) {
           this.tradingStep = n - 1
+          if (this.tradingStep === 1) this.$router.push(`/Proposal/${this.$route.params.id}`)
+          if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
           // this.$router.push('/Adjudication')
         
       },

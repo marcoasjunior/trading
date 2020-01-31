@@ -6,17 +6,17 @@
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
         </v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="checkProposalItems" :search="search" item-key="name" class="elevation-1" group-by="item"
+      <v-data-table :headers="headers" :items.sync="checkProposalItems" :search="search" item-key="name" class="elevation-1" group-by="item"
+      sort-by="bid.$numberDecimal"
         :loading="loading" loading-text="Estamos quase lá =)">
-
         <template v-slot:item.action="{ item }">
-          <v-icon class="mr-2" @click="confirmCancel(item)">
+          <v-icon class="mr-2" @click="confirmCancel(item)" v-if="item.status == 'active'">
             mdi-cancel
           </v-icon>
+          <v-icon class="mr-2" @click="activateProposal(item)" v-else>
+            mdi-redo-variant
+          </v-icon>
         </template>
-
-
-
       </v-data-table>
     </v-card>
 
@@ -44,6 +44,10 @@
             value: 'obs'
           },
           {
+            text: 'Status',
+            value: 'status'
+          },
+          {
             text: 'Ações',
             value: 'action',
             sortable: false
@@ -57,6 +61,66 @@
         }
       }
       }
+
+    },
+
+    methods: {
+
+      activateProposal(item) {
+
+        this.axios
+          .post('http://localhost:3000/api/activate/proposal', {id: item._id} ,this.config)
+          .then((response) => {
+            console.log(response)
+            this.axios
+        .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
+        .then((response) => {
+          console.log(response)
+            this.$store.dispatch('changeProposalItems', response.data.bids)
+
+
+        })
+        .catch(e => {
+          console.log(e)
+  
+
+
+        })
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+      },
+
+      confirmCancel(item) {
+
+        this.axios
+          .post('http://localhost:3000/api/disable/proposal', {id: item._id} ,this.config)
+          .then((response) => {
+            console.log(response)
+            this.axios
+        .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
+        .then((response) => {
+          console.log(response)
+            this.$store.dispatch('changeProposalItems', response.data.bids)
+
+
+        })
+        .catch(e => {
+          console.log(e)
+  
+
+
+        })
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+      },
 
     },
 

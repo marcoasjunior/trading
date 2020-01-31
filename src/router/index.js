@@ -49,7 +49,7 @@ const routes = [{
           component: () => import('../views/Rating.vue')
         },
         {
-          path: '/Bidding',
+          path: '/Bidding/:id',
           component: () => import('../views/Bidding.vue')
         },
         {

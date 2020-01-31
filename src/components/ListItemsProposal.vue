@@ -96,6 +96,7 @@
           formData.append('bid', this.$refs[id][0].$el.elements[0].value)
           formData.append('obs', this.$refs[id][0].$el.elements[1].value)
           formData.append('type', 'proposal')          
+          formData.append('status', 'active')          
 
         this.axios
           .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
