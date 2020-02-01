@@ -73,7 +73,14 @@
             number: 7,
             name: 'Proposta'
           },
-        ]
+        ],
+
+        config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      },
 
       }
     },
@@ -85,17 +92,21 @@
       },
       nextStep (n) {
           this.tradingStep = n + 1
-         if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
-         if (this.tradingStep === 3) this.$router.push(`/Bidding/${this.$route.params.id}`)
-        
+       
       },
       backStep (n) {
           this.tradingStep = n - 1
-          if (this.tradingStep === 1) this.$router.push(`/Proposal/${this.$route.params.id}`)
-          if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
-          // this.$router.push('/Adjudication')
-        
+ 
       },
+
+    },
+
+    watch: {
+      tradingStep () {
+        if (this.tradingStep === 1) this.$router.push(`/Proposal/${this.$route.params.id}`)
+        if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
+        if (this.tradingStep === 3) this.$router.push(`/Bidding/${this.$route.params.id}`)
+      }
     },
 
     created() {
@@ -106,13 +117,28 @@
                     console.log(response)
                     
                     // Put type of Company
-                    this.$store.dispatch('changeCompanyType', response.data.type)
+                    this.$store.dispatch('changeCompanyType', response.data.type)                  
 
                 })
                 .catch(e => {
                     console.log(e)
 
                 })
+
+             this.axios
+                      .get(`http://localhost:3000/api/getTradingStep/${this.$route.params.id}`, this.config)
+                      .then((response) => {
+                          console.log(response)
+                          if (response.data.step == 'proposal') this.tradingStep = 1 
+                          if (response.data.step == 'rating') this.tradingStep = 2 
+
+                      })
+                      .catch(e => {
+                          console.log(e)
+
+                })
+
+            
     }
   }
 </script>

@@ -95,11 +95,13 @@
       },
       goTrading(item) {
          if (item.step == 'proposal') this.$router.push({path: `/Proposal/${item._id}`})
+         if (item.step == 'rating') this.$router.push({path: `/Rating/${item._id}`})
       },
       adminTrading(item) {
         console.log(item)
         
         if (item.step == 'proposal') this.$router.push({path: `/Proposal/${item._id}`})
+        if (item.step == 'rating') this.$router.push({path: `/Rating/${item._id}`})
       },
       cancelTrading(item) {
 
