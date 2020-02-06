@@ -133,7 +133,7 @@
     created() {
 
       this.axios
-        .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
+        .get(`http://localhost:3000/api/getProposalBids/${this.$route.params.id}`, this.config)
         .then((response) => {
           console.log(response)
             this.$store.dispatch('changeProposalItems', response.data.bids)

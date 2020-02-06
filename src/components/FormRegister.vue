@@ -225,6 +225,7 @@ export default {
             formData.append('number', this.number)
             formData.append('file', this.image)
             formData.append('password', this.password2)
+            formData.append('type', 'seller')
 
             this.checkbox ? formData.append('cpf', this.cpf) : formData.append('cnpj', this.cnpj)
             if (!this.checkbox) formData.append('social', this.social)

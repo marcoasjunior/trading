@@ -53,15 +53,15 @@ const routes = [{
           component: () => import('../views/Bidding.vue')
         },
         {
-          path: '/Deal',
+          path: '/Deal/:id',
           component: () => import('../views/Deal.vue')
         },
         {
-          path: '/Adjudication',
+          path: '/Adjudication/:id',
           component: () => import('../views/Adjudication.vue')
         },
         {
-          path: '/Homologation',
+          path: '/Homologation/:id',
           component: () => import('../views/Homologation.vue')
         },]                      
       },

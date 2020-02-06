@@ -54,24 +54,19 @@
             name: 'Disputa de Lances'
           },
           {
-            step: 'proposal',
+            step: 'deal',
             number: 4,
-            name: 'Proposta'
+            name: 'Negociação'
           },
           {
-            step: 'proposal',
+            step: 'adjudication',
             number: 5,
-            name: 'Proposta'
+            name: 'Adjudicação'
           },
           {
-            step: 'proposal',
+            step: 'homologation',
             number: 6,
-            name: 'Proposta'
-          },
-          {
-            step: 'proposal',
-            number: 7,
-            name: 'Proposta'
+            name: 'Homologação'
           },
         ],
 
@@ -84,7 +79,6 @@
 
       }
     },
-
  
     methods: {
       onInput (val) {
@@ -98,6 +92,12 @@
           this.tradingStep = n - 1
  
       },
+      changeStep(tradingStep) {
+        console.log(tradingStep) // REFATORAR
+
+
+
+      }
 
     },
 
@@ -106,10 +106,13 @@
         if (this.tradingStep === 1) this.$router.push(`/Proposal/${this.$route.params.id}`)
         if (this.tradingStep === 2) this.$router.push(`/Rating/${this.$route.params.id}`)
         if (this.tradingStep === 3) this.$router.push(`/Bidding/${this.$route.params.id}`)
+        if (this.tradingStep === 4) this.$router.push(`/Deal/${this.$route.params.id}`)
+        if (this.tradingStep === 5) this.$router.push(`/Adjudication/${this.$route.params.id}`)
+        if (this.tradingStep === 6) this.$router.push(`/Homologation/${this.$route.params.id}`)
       }
     },
 
-    created() {
+    mounted() {
       
            this.axios
                 .get('http://localhost:3000/api/profile', this.config)
@@ -131,6 +134,8 @@
                           console.log(response)
                           if (response.data.step == 'proposal') this.tradingStep = 1 
                           if (response.data.step == 'rating') this.tradingStep = 2 
+                          if (response.data.step == 'bidding') this.tradingStep = 3 
+                          if (response.data.step == 'deal') this.tradingStep = 4 
 
                       })
                       .catch(e => {
