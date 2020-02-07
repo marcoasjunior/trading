@@ -8,6 +8,7 @@ export default new Vuex.Store({
     titleBar: 'Home',
     pageAdministration: 'Users',
     companyType: 'seller',
+    dealBids: [],
     listUsers: [],
     listItems: [],
     listTrading: [],
@@ -76,6 +77,10 @@ export default new Vuex.Store({
       state.proposalItems = newList
 
     },
+    setDealBids(state, newBids) {
+      state.dealBids = newBids
+
+    },
     setTradingConfig(state, newConfig) {
 
       if (newConfig.number) state.tradingConfig.number = newConfig.number
@@ -94,6 +99,7 @@ export default new Vuex.Store({
     pageAdministration: state => state.pageAdministration,
     companyType: state => state.companyType,
     listUsers: state => state.listUsers,
+    listDealBids: state => state.dealBids,
     listItems: state => state.listItems,
     listTrading: state => state.listTrading,
     listTradingItems: state => state.listTradingItems,
@@ -153,6 +159,9 @@ export default new Vuex.Store({
     },
     changeProposalItems(context, newItems) {
       context.commit('setProposalItems', newItems)
+    },
+    changeBids(context, newBids) {
+      context.commit('setDealBids', newBids)
     },
   },
   modules: {}

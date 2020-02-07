@@ -29,7 +29,10 @@ import ListItemsDealAdmin from '../components/ListItemsDealAdmin'
                 .catch(e => {
                     console.log(e)
 
+                
                 })
+
+
     },
   }
 </script>

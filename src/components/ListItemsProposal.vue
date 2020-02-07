@@ -24,8 +24,7 @@
               <v-card-title>
                 <h6> Descrição: {{ item.description }}</h6>                                            
               </v-card-title>
-              
-              
+                         
               <v-switch
                 :input-value="isExpanded(item)"
                 :label="isExpanded(item) ? '' : 'Fornecer'"
@@ -96,7 +95,7 @@
           formData.append('bid', this.$refs[id][0].$el.elements[0].value)
           formData.append('obs', this.$refs[id][0].$el.elements[1].value)
           formData.append('type', 'proposal')          
-          formData.append('status', 'active')          
+          formData.append('status', 'active')                
 
         this.axios
           .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
@@ -108,11 +107,6 @@
             console.log(e)
 
         })
-
-
-
-
-
       }
     },
 
