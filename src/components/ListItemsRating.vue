@@ -6,7 +6,7 @@
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
         </v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items.sync="checkProposalItems" :search="search" item-key="name" class="elevation-1" group-by="item"
+      <v-data-table :headers="headers" :items.sync="checkProposalItems" :search="search" item-key="item._id" class="elevation-1" group-by="type"
       sort-by="bid.$numberDecimal"
         :loading="loading" loading-text="Estamos quase lá =)">
         <template v-slot:item.action="{ item }">
@@ -19,8 +19,6 @@
         </template>
       </v-data-table>
     </v-card>
-
-
 
   </div>
 </template>
@@ -136,7 +134,7 @@
         .get(`http://localhost:3000/api/getProposalBids/${this.$route.params.id}`, this.config)
         .then((response) => {
           console.log(response)
-            this.$store.dispatch('changeProposalItems', response.data.bids)
+            this.$store.dispatch('changeProposalItems', response.data)
 
 
         })

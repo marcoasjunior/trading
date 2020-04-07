@@ -1,162 +1,268 @@
 <template>
-  <v-container fluid>
-    <v-data-iterator
-      :items="getItems"
-      item-key="name"
-      :items-per-page="4"
-      :single-expand="expand"
-  
-    >
-      <template v-slot:default="{ items, isExpanded, expand }">
-        <v-row>
-          <v-col
-            v-for="item in getItems"
-            :key="item.name"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card>
-              <v-card-title>
-                <h4>{{ item.name }}</h4>                                            
-              </v-card-title>
-              <v-card-title>
-                <h6> Descrição: {{ item.description }}</h6>                                            
-              </v-card-title>
-              
-              
-              <v-switch
-                :input-value="isExpanded(item)"
-                :label="isExpanded(item) ? '' : 'Fornecer'"
-                class="pl-4 mt-0"
-                @change="(v) => expand(item, v)"
-              ></v-switch>
-              <v-divider></v-divider>
-              <v-list v-if="isExpanded(item)" dense>
-          
-                <v-list-item>
-                  <v-list-item-content>Quantidade:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{item.quantity}}</v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>Referência:</v-list-item-content>
-                  <v-list-item-content class="align-end">$ {{ item.price.$numberDecimal}}</v-list-item-content>
-                </v-list-item>
-              <v-form :ref="item._id">
-                  <v-text-field
-                    
-                    label="Proposta Por Unidade"
-                    prepend-icon="mdi-currency-usd"
-                    type="number" 
-                    step="any"
-                ></v-text-field>
+  <div>
+    <!-- <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procurar" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers1" :items.sync="checkProposalItems" :search="search" item-key="item.name"
+        class="elevation-1" group-by="company" sort-by="bid.$numberDecimal" :loading="loading"
+        loading-text="Estamos quase lá =)">
+        <template v-slot:item.action="{ item }">
+          <v-icon class="mr-2" @click="confirmCancel(item)" v-if="item.status == 'active'">
+            mdi-cancel
+          </v-icon>
+          <v-icon class="mr-2" @click="activateProposal(item)" v-else>
+            mdi-redo-variant
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card> -->
 
-                 <v-textarea
-                    label="Observações"
-                    auto-grow
-                    prepend-icon="mdi-clipboard-text-outline"
-                    hint="Caso seja necessário"
-                    rows="2"
-                    row-height="15"
-                    ></v-textarea>
+    <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procurar" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers2" :items.sync="checkWinners" :search="search" item-key="item.name"
+        class="elevation-1" :loading="loading"
+        loading-text="Estamos quase lá =)">
+        <template v-slot:item.action="{ item }">
+          <v-icon class="mr-2" @click="confirmCancel(item)" v-if="item.status == 'active'">
+            mdi-cancel
+          </v-icon>
+          <v-icon class="mr-2" @click="activateProposal(item)" v-else>
+            mdi-redo-variant
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
 
-                  <v-btn block @click="submitProposal(item._id)" > Enviar </v-btn>
-              </v-form>
+    <v-card>
+      <v-card-title>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Procurar" single-line hide-details>
+        </v-text-field>
+      </v-card-title>
+      <v-data-table :headers="headers3" :items.sync="checkProposalItems" :search="search" item-key="item.name"
+        class="elevation-1" group-by="type" sort-by="bid.$numberDecimal" :loading="loading"
+        loading-text="Estamos quase lá =)">
+        <template v-slot:item.action="{ item }">
+          <v-icon class="mr-2" @click="confirmCancel(item)" v-if="item.status == 'active'">
+            mdi-cancel
+          </v-icon>
+          <v-icon class="mr-2" @click="activateProposal(item)" v-else>
+            mdi-redo-variant
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
 
-              </v-list>
-
-            </v-card>
-          </v-col>
-        </v-row>
-      </template>
-    </v-data-iterator>
-  </v-container>
+  </div>
 </template>
-
 <script>
 /* eslint-disable no-console */
   export default {
-    data: () => ({
-      expand: false,
-      config: {
+    data() {
+      return {
+        modal: false,
+        loading: false,
+        search: '',
+        category: '',
+        headers1: [
+
+          {
+            text: 'Lance',
+            value: 'bid.$numberDecimal'
+          },
+          {
+            text: 'Status',
+            value: 'status'
+          },
+          {
+            text: 'Ranking',
+            value: 'ranking'
+          },
+          {
+            text: 'Ações',
+            value: 'action',
+            sortable: false
+          },
+
+        ],
+        headers2: [
+
+          {
+            text: 'Empresa',
+            value: 'company.name'
+          },
+
+          {
+            text: 'Item',
+            value: 'item.name'
+          },
+
+          {
+            text: 'Lance',
+            value: 'bid.$numberDecimal'
+          },
+          {
+            text: 'Ações',
+            value: 'action',
+            sortable: false
+          }       
+        ],
+
+        headers3: [
+
+          {
+            text: 'Lance',
+            value: 'bid.$numberDecimal'
+          },
+          {
+            text: 'Empresa',
+            value: 'company'
+          },
+          {
+            text: 'Status',
+            value: 'status'
+          },
+          {
+            text: 'Ações',
+            value: 'action',
+            sortable: false
+          },
+
+        ],
+        items: [],
+        companies: [],
+        config: {
         headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'multipart/form-data'
+          Authorization: `Bearer ${localStorage.token}`
         }
-      },
-      
-    }),
+      }
+      }
+
+    },
+
     methods: {
-      submitProposal(id) {
 
-        let formData = new FormData()
-          formData.append('idItem', id)
-          formData.append('idTrading', this.$route.params.id)
-          formData.append('bid', this.$refs[id][0].$el.elements[0].value)
-          formData.append('obs', this.$refs[id][0].$el.elements[1].value)
-          formData.append('type', 'proposal')          
-          formData.append('status', 'active')          
-
-        this.axios
-          .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
+      async getProposalBids() {
+        await this.axios
+          .get(`http://localhost:3000/api/getProposalBids/${this.$route.params.id}`, this.config)
           .then((response) => {
-            console.log(response)
+
+            this.$store.dispatch('changeProposalItems', response.data)
+            this.$store.dispatch('changeRankedItems', response.data)
 
           })
           .catch(e => {
             console.log(e)
 
-        })
+          })
+
+        await this.axios
+          .get(`http://localhost:3000/api/getWinners/${this.$route.params.id}`, this.config)
+          .then((response) => {
+
+            this.$store.dispatch('changeWinners', response.data)
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+
+        await this.axios
+          .post(`http://localhost:3000/api/update/step`, {
+            step: 'rating',
+            id: this.$route.params.id
+          }, this.config)
+          .then((response) => {
+            console.log(response)
+
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+      },
+
+      activateProposal(item) {
+
+        this.axios
+          .post('http://localhost:3000/api/activate/proposal', {
+            id: item._id
+          }, this.config)
+          .then((response) => {
+            console.log(response)
+            this.axios
+              .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
+              .then((response) => {
+                console.log(response)
+                this.$store.dispatch('changeProposalItems', response.data.bids)
+
+              })
+              .catch(e => {
+                console.log(e)
+
+              })
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+      },
+
+      confirmCancel(item) {
+
+        this.axios
+          .post('http://localhost:3000/api/disable/proposal', {
+            id: item._id
+          }, this.config)
+          .then((response) => {
+            console.log(response)
+            this.axios
+              .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
+              .then((response) => {
+                console.log(response)
+                this.$store.dispatch('changeProposalItems', response.data.bids)
+
+
+              })
+              .catch(e => {
+                console.log(e)
 
 
 
+              })
 
+          })
+          .catch(e => {
+            console.log(e)
 
-      }
+          })
+      },
+
     },
 
     computed: {
-        getItems() {
-            return this.$store.getters.listTradingItems
-        }
+      checkProposalItems() {
+        return this.$store.getters.proposalItems
+      },
+      checkRankedItems() {
+        return this.$store.getters.rankedItems
+      },
+      checkWinners() {
+        return this.$store.getters.winners
+      }
     },
 
     created() {
 
+      this.getProposalBids()     
       
-   
-      this.axios
-        .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
-        .then((response) => {
-          console.log(response)
-
-
-          // Put items
-          this.$store.dispatch('changeListTradingItems', response.data.items)
-
-
-        })
-        .catch(e => {
-          console.log(e)
-
-
-
-        })
-
-         this.axios
-                .get('http://localhost:3000/api/profile', this.config)
-                .then((response) => {
-                    console.log(response)
-                    
-                    // Put type of Company
-                    this.$store.dispatch('changeCompanyType', response.data.type)
-
-                })
-                .catch(e => {
-                    console.log(e)
-
-                })
-  }
+    },
   }
 </script>

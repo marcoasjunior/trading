@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import compareBids from '../utils/sortBids'
 
 Vue.use(Vuex)
 
@@ -14,10 +15,13 @@ export default new Vuex.Store({
     listTrading: [],
     listTradingItems: [],
     proposalItems: [],
+    rankedItems: [],
     selectedItems: [],
     selectedUsers: [],
+    winners: [],
     modalTradingNew: false,
     tradingConfig: {
+
       number: null,
       notice: null,
       target: '',
@@ -75,10 +79,17 @@ export default new Vuex.Store({
     },
     setProposalItems(state, newList) {
       state.proposalItems = newList
+    },
+    setRankedItems(state, newList) {
+      state.rankedItems = newList
 
     },
     setDealBids(state, newBids) {
       state.dealBids = newBids
+
+    },
+    setWinners(state, newList) {
+      state.winners = newList
 
     },
     setTradingConfig(state, newConfig) {
@@ -104,6 +115,8 @@ export default new Vuex.Store({
     listTrading: state => state.listTrading,
     listTradingItems: state => state.listTradingItems,
     proposalItems: state => state.proposalItems,
+    rankedItems: state => state.rankedItems,
+    winners: state => state.winners,
     selectedItems: state => state.selectedItems,
     selectedUsers: state => state.selectedUsers,
     tradingConfig: state => state.tradingConfig,
@@ -160,6 +173,17 @@ export default new Vuex.Store({
     changeProposalItems(context, newItems) {
       context.commit('setProposalItems', newItems)
     },
+    changeRankedItems(context, newItems) {
+
+      let newRankedList = newItems.sort(compareBids)
+
+      context.commit('setRankedItems', newRankedList)
+    },
+
+    changeWinners(context, newList) {
+      context.commit('setWinners', newList)
+    },
+
     changeBids(context, newBids) {
       context.commit('setDealBids', newBids)
     },
