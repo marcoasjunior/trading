@@ -44,9 +44,19 @@
           icon: 'mdi-home'
         },
         {
+          text: 'Dashboard',
+          route: '/Dashboard',
+          icon: 'mdi-google-analytics'
+        },
+        {
           text: 'Pregão Eletrônico',
           route: '/TradingList',
           icon: 'mdi-cash-usd'
+        },
+        {
+          text: 'Gerenciamento',
+          route: '/Administration',
+          icon: 'mdi-home-account'
         },
         {
           text: 'Meus Dados',

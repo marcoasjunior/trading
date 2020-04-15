@@ -3,12 +3,12 @@ import Vuex from 'vuex'
 import compareBids from '../utils/sortBids'
 
 Vue.use(Vuex)
-
+/* eslint-disable no-console */
 export default new Vuex.Store({
   state: {
     titleBar: 'Home',
     pageAdministration: 'Users',
-    companyType: 'seller',
+    companyType: '',
     dealBids: [],
     listUsers: [],
     listItems: [],
@@ -132,6 +132,7 @@ export default new Vuex.Store({
 
   },
   actions: {
+
     changeTitleBar(context, newTitle) {
       context.commit('setTitleBar', newTitle)
     },

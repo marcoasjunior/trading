@@ -4,7 +4,6 @@
       <CarouselHome />
       <TimeLine />
 
-
   </div>
 </template>
 
@@ -12,48 +11,32 @@
 
 import CarouselHome from '../components/CarouselHome'    
 import TimeLine from '../components/TimeLine'    
-    
+import checkProfile from '../mixins/checkProfile'    
 
 export default {
   /* eslint-disable no-console */
+
   name: 'Home',
-    components: {
+  mixins: [checkProfile],
+  components: {
 
-      CarouselHome,
-      TimeLine
-  
+    CarouselHome,
+    TimeLine
 
-    },
-    methods: {
-      changeCompanyType(response) {
-        this.$store.dispatch('changeCompanyType', response.data.type)
-      }
-    },
-    mounted() {
+  },
 
-      let config = {
-            headers: {
-              Authorization: `Bearer ${localStorage.token}`
-            }
-          }
+  methods: {
 
-      this.axios
-                .get('http://localhost:3000/api/profile', config)
-                .then((response) => {
-                    console.log(response)
-                    
-                    // Put type of Company
-                    this.$store.dispatch('changeCompanyType', response.data.type)
-
-                })
-                .catch(e => {
-                    console.log(e)
-                    this.$router.push({ path: '/' })
-
-                })
+    changeCompanyType(response) {
+      this.$store.dispatch('changeCompanyType', response.data.type)
     }
-    
+  
+  },
+  created() {
 
+    this.checkProfile()
+ 
 
   }
+}
 </script>

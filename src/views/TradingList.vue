@@ -1,43 +1,27 @@
 <template>
   <div>
-      <ListTrading />
-  
+      <ListTrading /> 
   </div>
 </template>
 
 <script>
-import ListTrading from '../components/ListTrading'
 
+import ListTrading from '../components/ListTrading'
+import checkProfile from '../mixins/checkProfile'
 
 export default {
-    /* eslint-disable no-console */
-    name: 'TradingList',
-    components: {
-        ListTrading,
- 
-    },
-    mounted() {
 
-      let config = {
-            headers: {
-              Authorization: `Bearer ${localStorage.token}`
-            }
-          }
+  name: 'TradingList',
+  mixins: [checkProfile],
+  components: {
+    ListTrading,
+  },
 
+  created() {
 
-      this.axios
-                .get('http://localhost:3000/api/profile', config)
-                .then((response) => {
-                    console.log(response)
+    this.checkProfile()
 
-
-                })
-                .catch(e => {
-                    console.log(e)
-                    this.$router.push({ path: '/' })
-
-                })
-    }
+  }
 
 }
 </script>

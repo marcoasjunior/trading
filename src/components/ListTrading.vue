@@ -10,7 +10,7 @@
         :loading="loading" loading-text="Estamos quase lá =)">
 
         <template v-slot:item.action="{ item }" v-if="this.$store.getters.companyType == 'buyer'">
-          <v-icon class="mr-2" @click="adminTrading(item)">
+          <v-icon class="mr-2" @click="goTradingAdmin(item)">
             mdi-settings-transfer-outline
           </v-icon>
           <v-icon class="mr-2" @click="confirmCancel(item)">
@@ -18,7 +18,7 @@
           </v-icon>
         </template>
 
-        <template v-slot:item.action="{ item }" v-else>        
+        <template v-slot:item.action="{ item }" v-else>
           <v-icon class="mr-2" @click="goTrading(item)">
             mdi-login-variant
           </v-icon>
@@ -32,10 +32,9 @@
       </v-fab-transition>
     </v-card>
 
-
-
   </div>
 </template>
+
 <script>
 /* eslint-disable no-console */
   export default {
@@ -75,14 +74,15 @@
         ],
         items: [],
         config: {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`
+          }
         }
-      }
       }
 
     },
     methods: {
+
       goTradingNew() {
         this.$router.push({
           path: '/TradingNew'
@@ -93,35 +93,53 @@
         confirm('Deseja cancelar o pregão em questão?') ? this.cancelTrading(item) : null
 
       },
+
       goTrading(item) {
-         if (item.step == 'proposal') this.$router.push({path: `/Proposal/${item._id}`})
-         if (item.step == 'rating') this.$router.push({path: `/Rating/${item._id}`})
+        if (item.step == 'proposal') this.$router.push({
+          path: `/Proposal/${item._id}`
+        })
+        if (item.step == 'rating') this.$router.push({
+          path: `/Rating/${item._id}`
+        })
       },
-      adminTrading(item) {
-        console.log(item)
-        
-        if (item.step == 'proposal') this.$router.push({path: `/Proposal/${item._id}`})
-        if (item.step == 'rating') this.$router.push({path: `/Rating/${item._id}`})
+
+      goTradingAdmin(item) {
+
+        let step
+
+        this.axios
+          .get(`/getTradingStep/${item._id}`, this.config)
+          .then((response) => {
+
+            step = response.data
+            this.$router.push({path: `/${step}/${item._id}`})
+
+          })
+          .catch(e => {
+            return alert(e)
+
+          })
       },
+
       cancelTrading(item) {
 
-      this.axios
-        .post('http://localhost:3000/api/cancel/trading', {id: item._id} ,this.config)
-        .then((response) => {
-          console.log(response)
+        this.axios
+          .post('/cancel/trading', {
+            id: item._id
+          }, this.config)
+          .then((response) => {
+            console.log(response)
 
-        })
-        .catch(e => {
-          console.log(e)
+          })
+          .catch(e => {
+            console.log(e)
 
-        })
-
-
+          })
       }
-
     },
 
     computed: {
+
       checkTrading() {
         return this.$store.getters.listTrading
       }
@@ -130,38 +148,21 @@
     created() {
 
       this.axios
-        .get('http://localhost:3000/api/getTrading', this.config)
+        .get('/getTrading', this.config)
         .then((response) => {
-          console.log(response)
+
           this.loading = false
 
           // Put items
           this.$store.dispatch('changeListTrading', response.data)
-
 
         })
         .catch(e => {
           console.log(e)
           this.loading = false
 
-
         })
 
-      this.axios
-                .get('http://localhost:3000/api/profile', this.config)
-                .then((response) => {
-                    console.log(response)
-                    
-                    // Put type of Company
-                    this.$store.dispatch('changeCompanyType', response.data.type)
-
-                })
-                .catch(e => {
-                    console.log(e)
-                    this.$router.push({ path: '/' })
-
-                })
-      
     },
   }
 </script>

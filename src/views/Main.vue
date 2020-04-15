@@ -1,25 +1,24 @@
 <template>
   <div>
-        <NavBar />
-    <router-view></router-view>
-   
+    <NavBarAdmin v-if="$store.getters.companyType == 'buyer'"/>
+    <NavBar v-else/>
+    <router-view />
+
   </div>
 </template>
 
 <script>
-import NavBar from '../components/NavBar'    
-
+import NavBar from '../components/NavBar'
+import NavBarAdmin from '../components/NavBarAdmin'
 
 export default {
   name: 'Main',
-    components: {
-      NavBar,
-    
+
+  components: {
+    NavBar,
+    NavBarAdmin
+
   }
 
 }
 </script>
-
-<style>
-
-</style>
