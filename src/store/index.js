@@ -19,6 +19,7 @@ export default new Vuex.Store({
     selectedItems: [],
     selectedUsers: [],
     winners: [],
+    tradingStep: 1,
     modalTradingNew: false,
     tradingConfig: {
 
@@ -92,6 +93,10 @@ export default new Vuex.Store({
       state.winners = newList
 
     },
+    setTradingStep(state, newStep) {
+      state.tradingStep = newStep
+
+    },
     setTradingConfig(state, newConfig) {
 
       if (newConfig.number) state.tradingConfig.number = newConfig.number
@@ -117,6 +122,7 @@ export default new Vuex.Store({
     proposalItems: state => state.proposalItems,
     rankedItems: state => state.rankedItems,
     winners: state => state.winners,
+    tradingStep: state => state.tradingStep,
     selectedItems: state => state.selectedItems,
     selectedUsers: state => state.selectedUsers,
     tradingConfig: state => state.tradingConfig,
@@ -183,6 +189,9 @@ export default new Vuex.Store({
 
     changeWinners(context, newList) {
       context.commit('setWinners', newList)
+    },
+    changeTradingStep(context, newStep) {
+      context.commit('setTradingStep', newStep)
     },
 
     changeBids(context, newBids) {

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <v-app-bar color="deep-purple accent-4" dark>
+    <v-app-bar color="deep-purple accent-4" dense dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
       <v-toolbar-title>{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>

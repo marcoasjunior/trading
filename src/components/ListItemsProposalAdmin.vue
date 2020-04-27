@@ -3,9 +3,7 @@
     <v-data-iterator
       :items="getItems"
       item-key="name"
-      :items-per-page="6"
-
-  
+      :items-per-page="6" 
     >
       <template>
         <v-row>
@@ -34,54 +32,55 @@
 </template>
 
 <script>
+
+import checkProfile from '../mixins/checkProfile'
+
 /* eslint-disable no-console */
 export default {
-    data: () => ({
-        expand: false,
-        config: {
-            headers: {
-                Authorization: `Bearer ${localStorage.token}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        },
 
-    }),
+  mixins: [checkProfile],
 
-    computed: {
-        getItems() {
-            return this.$store.getters.listTradingItems
-        }
+  data: () => ({
+    expand: false,
+    config: {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        'Content-Type': 'multipart/form-data'
+      }
     },
 
-    created() {
+  }),
 
-        this.axios
-            .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
-            .then((response) => {
-                console.log(response)
-
-                // Put items
-                this.$store.dispatch('changeListTradingItems', response.data.items)
-
-            })
-            .catch(e => {
-                console.log(e)
-
-            })
-
-        this.axios
-            .get('http://localhost:3000/api/profile', this.config)
-            .then((response) => {
-                console.log(response)
-
-                // Put type of Company
-                this.$store.dispatch('changeCompanyType', response.data.type)
-
-            })
-            .catch(e => {
-                console.log(e)
-
-            })
+  computed: {
+    getItems() {
+      return this.$store.getters.listTradingItems
     }
+  },
+
+  methods: {
+
+    getTradingItems() {
+      this.axios
+        .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
+        .then((response) => {
+          console.log(response)
+
+          // Put items
+          this.$store.dispatch('changeListTradingItems', response.data.items)
+
+        })
+        .catch(e => {
+          console.log(e)
+
+        })
+    }
+  },
+
+  created() {
+
+    this.getTradingItems()
+    this.checkProfile()
+    
+  }
 }
 </script>

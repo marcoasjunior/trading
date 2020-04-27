@@ -10,7 +10,7 @@
         :loading="loading" loading-text="Estamos quase lá =)">
 
         <template v-slot:item.action="{ item }" v-if="this.$store.getters.companyType == 'buyer'">
-          <v-icon class="mr-2" @click="goTradingAdmin(item)">
+          <v-icon class="mr-2" @click="goTrading(item)">
             mdi-settings-transfer-outline
           </v-icon>
           <v-icon class="mr-2" @click="confirmCancel(item)">
@@ -95,15 +95,6 @@
       },
 
       goTrading(item) {
-        if (item.step == 'proposal') this.$router.push({
-          path: `/Proposal/${item._id}`
-        })
-        if (item.step == 'rating') this.$router.push({
-          path: `/Rating/${item._id}`
-        })
-      },
-
-      goTradingAdmin(item) {
 
         let step
 
@@ -121,9 +112,9 @@
           })
       },
 
-      cancelTrading(item) {
+      async cancelTrading(item) {
 
-        this.axios
+        await this.axios
           .post('/cancel/trading', {
             id: item._id
           }, this.config)
