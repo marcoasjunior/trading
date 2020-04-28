@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <v-card>
     <v-alert type="success" dismissible  v-show="alert">
       Alterado com sucesso
@@ -21,9 +20,15 @@
             mdi-redo-variant
           </v-icon>
         </template>
+
+        <template v-slot:item.winner="{ item }">
+          <v-icon class="mr-2" @click="confirmDeactivate(item)" v-if="item.winner == 'true' && item.status != 'disable'">
+            mdi-star
+          </v-icon>
+        </template>
+
       </v-data-table>
     </v-card>
-
   </div>
 </template>
 <script>
@@ -38,7 +43,6 @@ export default {
       search: '',
       category: '',
       headers: [
-
         {
           text: 'Proposta',
           value: 'bid.$numberDecimal'
@@ -46,6 +50,10 @@ export default {
         {
           text: 'Observação',
           value: 'obs'
+        },
+        {
+          text: 'Vencedor',
+          value: 'winner',
         },
         {
           text: 'Status',
@@ -56,7 +64,6 @@ export default {
           value: 'action',
           sortable: false
         },
-
       ],
       items: [],
       config: {
@@ -65,7 +72,6 @@ export default {
         }
       }
     }
-
   },
 
   methods: {
@@ -74,9 +80,9 @@ export default {
 
       if (confirm('Gostaria de ativar a proposta?')) {
 
-        this.activateProposal(item)
+        await this.activateProposal(item)
 
-        this.getProposalBids()
+        await this.getProposalBids()
 
         this.alert = true
 
@@ -104,10 +110,11 @@ export default {
 
       if (confirm('Gostaria de desativar a proposta?')) {
 
-        this.deativateProposal(item)
+        await this.deativateProposal(item)
+        console.log('1')
 
-        this.getProposalBids()
-
+        await this.getProposalBids()
+        console.log('2')
         this.alert = true
 
       }
@@ -137,7 +144,6 @@ export default {
         .then((response) => {
           console.log(response)
           this.$store.dispatch('changeProposalItems', response.data)
-
 
         })
         .catch(e => {

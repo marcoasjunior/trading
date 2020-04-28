@@ -95,6 +95,7 @@ export default {
 
   }),
   methods: {
+    
     submitProposal(id) {
 
       let formData = new FormData()

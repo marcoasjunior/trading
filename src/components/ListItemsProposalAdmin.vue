@@ -16,11 +16,12 @@
             lg="3"
           >
             <v-card>
+              
               <v-card-title>
                 <h4>{{ item.name }}</h4>                                            
               </v-card-title>
               <v-card-title>
-                <h6> Descrição: {{ item.description }}</h6>                                            
+                <h6> Descrição: {{ item.description }}</h6>                                                                                    
               </v-card-title>           
 
             </v-card>
