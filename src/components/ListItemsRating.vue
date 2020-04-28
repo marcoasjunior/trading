@@ -2,6 +2,9 @@
   <div>
 
     <v-card>
+    <v-alert type="success" dismissible  v-show="alert">
+      Alterado com sucesso
+    </v-alert>
       <v-card-title>
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Procure" single-line hide-details>
         </v-text-field>
@@ -11,10 +14,10 @@
         :loading="loading" loading-text="Estamos quase lá =)">
         
         <template v-slot:item.action="{ item }">
-          <v-icon class="mr-2" @click="confirmCancel(item)" v-if="item.status === 'active'">
+          <v-icon class="mr-2" @click="confirmDeactivate(item)" v-if="item.status === 'active'">
             mdi-cancel
           </v-icon>
-          <v-icon class="mr-2" @click="activateProposal(item)" v-else>
+          <v-icon class="mr-2" @click="confirmActivate(item)" v-else>
             mdi-redo-variant
           </v-icon>
         </template>
@@ -26,10 +29,12 @@
 <script>
 /* eslint-disable no-console */
 export default {
+  
   data() {
     return {
       modal: false,
       loading: false,
+      alert: false,
       search: '',
       category: '',
       headers: [
@@ -65,59 +70,64 @@ export default {
 
   methods: {
 
-    async activateProposal(item) {
+    async confirmActivate(item) {
 
-      await this.axios
-        .post('http://localhost:3000/api/activate/proposal', {
-          id: item._id
-        }, this.config)
+      if (confirm('Gostaria de ativar a proposta?')) {
 
-        .then((response) => {
-          console.log(response)
-        })
-        .catch(e => {
-          console.log(e)
+        this.activateProposal(item)
 
-        })
+        this.getProposalBids()
 
-      await this.axios
-        .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
-        .then((response) => {
-          console.log(response)
-          this.$store.dispatch('changeProposalItems', response.data.bids)
-        })
-        .catch(e => {
-          console.log(e)
-        })
+        this.alert = true
+
+      }
     },
 
-    async confirmCancel(item) {
+    async activateProposal(item) {
 
-      await this.axios
-        .post('http://localhost:3000/api/disable/proposal', {
-          id: item._id
-        }, this.config)
-        .then((response) => {
-          console.log(response)
+        await this.axios
+          .post('http://localhost:3000/api/activate/proposal', {
+            id: item._id
+          }, this.config)
 
-        })
-        .catch(e => {
-          console.log(e)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch(e => {
+            return console.log(e)
 
-        })
+          })
 
-      await this.axios
-        .get(`http://localhost:3000/api/getProposalItems/${this.$route.params.id}`, this.config)
-        .then((response) => {
-          console.log(response)
-          this.$store.dispatch('changeProposalItems', response.data.bids)
+    },
 
+    async confirmDeactivate(item) {
 
-        })
-        .catch(e => {
-          console.log(e)
+      if (confirm('Gostaria de desativar a proposta?')) {
 
-        })
+        this.deativateProposal(item)
+
+        this.getProposalBids()
+
+        this.alert = true
+
+      }
+    },
+
+    async deativateProposal(item) {
+
+        await this.axios
+          .post('http://localhost:3000/api/disable/proposal', {
+            id: item._id
+          }, this.config)
+          .then((response) => {
+            console.log(response)
+
+          })
+          .catch(e => {
+            console.log(e)
+
+          })
+      
     },
 
     async getProposalBids() {
@@ -145,7 +155,6 @@ export default {
         }, this.config)
         .then((response) => {
           console.log(response)
-
 
         })
         .catch(e => {

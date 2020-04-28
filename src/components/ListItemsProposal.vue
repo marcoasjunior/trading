@@ -74,83 +74,76 @@
 </template>
 
 <script>
+
+import checkProfile from '../mixins/checkProfile'
+
 /* eslint-disable no-console */
-  export default {
-    data: () => ({
-      expand: false,
-      config: {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      },
-      
-    }),
-    methods: {
-      submitProposal(id) {
+export default {
 
-        let formData = new FormData()
-          formData.append('idItem', id)
-          formData.append('idTrading', this.$route.params.id)
-          formData.append('bid', this.$refs[id][0].$el.elements[0].value)
-          formData.append('obs', this.$refs[id][0].$el.elements[1].value)
-          formData.append('type', 'proposal')          
-          formData.append('status', 'active')                
+  name: 'ListItemsProposal',
 
-        this.axios
-          .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
-          .then((response) => {
-            console.log(response)
+  mixins: [checkProfile],
 
-          })
-          .catch(e => {
-            console.log(e)
-
-        })
+  data: () => ({
+    expand: false,
+    config: {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        'Content-Type': 'multipart/form-data'
       }
     },
 
-    computed: {
-        getItems() {
-            return this.$store.getters.listTradingItems
-        }
-    },
+  }),
+  methods: {
+    submitProposal(id) {
 
-    created() {
+      let formData = new FormData()
+      formData.append('idItem', id)
+      formData.append('idTrading', this.$route.params.id)
+      formData.append('bid', this.$refs[id][0].$el.elements[0].value)
+      formData.append('obs', this.$refs[id][0].$el.elements[1].value)
+      formData.append('type', 'proposal')
+      formData.append('status', 'active')
 
-      
-   
       this.axios
-        .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
+        .post(`http://localhost:3000/api/register/proposal`, formData, this.config)
         .then((response) => {
           console.log(response)
-
-
-          // Put items
-          this.$store.dispatch('changeListTradingItems', response.data.items)
-
 
         })
         .catch(e => {
           console.log(e)
 
+        })
+    },
 
+    async getTradingItems() {
+      await this.axios
+        .get(`http://localhost:3000/api/getTradingItems/${this.$route.params.id}`, this.config)
+        .then((response) => {
+          console.log(response)
+
+          // Put items
+          this.$store.dispatch('changeListTradingItems', response.data.items)
 
         })
+        .catch(e => {
+          console.log(e)
 
-         this.axios
-                .get('http://localhost:3000/api/profile', this.config)
-                .then((response) => {
-                    console.log(response)
-                    
-                    // Put type of Company
-                    this.$store.dispatch('changeCompanyType', response.data.type)
+        })
+    }
+  },
 
-                })
-                .catch(e => {
-                    console.log(e)
+  computed: {
+    getItems() {
+      return this.$store.getters.listTradingItems
+    }
+  },
 
-                })
+  created() {
+
+    this.getTradingItems()
+    this.checkProfile()
   }
-  }
+}
 </script>
