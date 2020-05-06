@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import compareBids from '../utils/sortBids'
+import api from '../services/axiosConfig'
 
 Vue.use(Vuex)
 /* eslint-disable no-console */
@@ -32,7 +33,8 @@ export default new Vuex.Store({
       time: null,
       endTime: null
 
-    }
+    },
+    loading: false
 
   },
 
@@ -109,6 +111,9 @@ export default new Vuex.Store({
       else state.tradingConfig.startDate = newConfig.date
 
     },
+    setLoading(state, newState) {
+      state.loading = newState
+    }
   },
   getters: {
     titleBar: state => state.titleBar,
@@ -134,7 +139,9 @@ export default new Vuex.Store({
     tradingConfigEndDate: state => state.tradingConfig.endDate,
     tradingConfigTime: state => state.tradingConfig.time,
     tradingConfigEndTime: state => state.tradingConfig.endTime,
-    modalTradingNew: state => state.modalTradingNew
+    modalTradingNew: state => state.modalTradingNew,
+    loading: state => state.loading
+
 
   },
   actions: {
@@ -190,12 +197,54 @@ export default new Vuex.Store({
     changeWinners(context, newList) {
       context.commit('setWinners', newList)
     },
-    changeTradingStep(context, newStep) {
+
+    async changeTradingStep(context, newStep) {
+
+      let realStep
+      let step = newStep.step
+
+      if (step === 1) realStep = 'proposal'
+      if (step === 2) realStep = 'rating'
+      if (step === 3) realStep = 'bidding'
+      if (step === 4) realStep = 'deal'
+      if (step === 5) realStep = 'adjudication'
+      if (step === 6) realStep = 'homologation'
+
+      await api.post('update/step', {
+
+          step: realStep,
+          id: newStep.id
+
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`
+          }
+        })
+        .then((response) => {
+
+          context.commit('setTradingStep', step)
+          console.log(response)
+
+        })
+        .catch(err => {
+
+          alert(err)
+
+        })
+    },
+
+    changeStepperStep(context, newStep) {
+
       context.commit('setTradingStep', newStep)
+
     },
 
     changeBids(context, newBids) {
       context.commit('setDealBids', newBids)
+    },
+
+    changeLoading(context, newState) {
+      context.commit('setLoading', newState)
     },
   },
   modules: {}

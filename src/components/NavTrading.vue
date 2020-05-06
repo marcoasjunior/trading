@@ -2,7 +2,7 @@
   <v-bottom-navigation dense
     color="deep-purple accent-4"
   >
-    <v-btn @click="backStep">
+    <v-btn v-if="getStep !== 1" @click="backStep">
       <span>Retornar Fase</span>
       <v-icon>mdi-rotate-left</v-icon>
     </v-btn>
@@ -17,7 +17,7 @@
       <v-icon>mdi-cancel</v-icon>
     </v-btn>
 
-        <v-btn @click="nextStep">
+        <v-btn v-if="getStep !== 6" @click="nextStep">
       <span>Avançar fase</span>
       <v-icon>mdi-play</v-icon>
     </v-btn>
@@ -39,14 +39,21 @@
     },
 
     methods: {
-      nextStep() {
+      async nextStep() {
 
-        this.$store.dispatch('changeTradingStep', this.getStep + 1)
+        this.$store.dispatch('changeTradingStep', {
+          step: this.getStep + 1,
+          id: this.$route.params.id
+        })
 
       },
-      backStep() {
 
-        this.$store.dispatch('changeTradingStep', this.getStep - 1)
+      async backStep() {
+
+        this.$store.dispatch('changeTradingStep', {
+          step: this.getStep - 1,
+          id: this.$route.params.id
+        })
 
       },
 

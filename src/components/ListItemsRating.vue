@@ -10,7 +10,7 @@
       </v-card-title>
       <v-data-table :headers="headers" :items.sync="checkProposalItems" :search="search" item-key="item._id" class="elevation-1" group-by="type"
       sort-by="bid.$numberDecimal"
-        :loading="loading" loading-text="Estamos quase lá =)">
+        :loading="checkLoading" loading-text="Estamos quase lá =)">
         
         <template v-slot:item.action="{ item }">
           <v-icon class="mr-2" @click="confirmDeactivate(item)" v-if="item.status === 'active'">
@@ -33,17 +33,21 @@
 </template>
 <script>
 /* eslint-disable no-console */
+import loading from '../mixins/loading'
+
 export default {
-  
+
+  mixins: [loading],
+
   data() {
+
     return {
+
       modal: false,
-      loading: false,
       alert: false,
       search: '',
       category: '',
-      headers: [
-        {
+      headers: [{
           text: 'Proposta',
           value: 'bid.$numberDecimal'
         },
@@ -91,18 +95,22 @@ export default {
 
     async activateProposal(item) {
 
-        await this.axios
-          .post('http://localhost:3000/api/activate/proposal', {
-            id: item._id
-          }, this.config)
+      this.enableLoading()
 
-          .then((response) => {
-            console.log(response)
-          })
-          .catch(e => {
-            return console.log(e)
+      await this.axios
+        .post('http://localhost:3000/api/activate/proposal', {
+          id: item._id
+        }, this.config)
 
-          })
+        .then((response) => {
+          console.log(response)
+          this.disableLoading()
+        })
+        .catch(e => {
+          this.disableLoading()
+          return console.log(e)
+
+        })
 
     },
 
@@ -122,19 +130,23 @@ export default {
 
     async deativateProposal(item) {
 
-        await this.axios
-          .post('http://localhost:3000/api/disable/proposal', {
-            id: item._id
-          }, this.config)
-          .then((response) => {
-            console.log(response)
+      this.enableLoading()
 
-          })
-          .catch(e => {
-            console.log(e)
+      await this.axios
+        .post('http://localhost:3000/api/disable/proposal', {
+          id: item._id
+        }, this.config)
+        .then((response) => {
+          console.log(response)
+          this.disableLoading()
 
-          })
-      
+        })
+        .catch(e => {
+          alert(e)
+          this.disableLoading()
+
+        })
+
     },
 
     async getProposalBids() {
@@ -174,13 +186,19 @@ export default {
 
     checkProposalItems() {
       return this.$store.getters.proposalItems
-    }
+    },
+    checkLoading() {
+      return this.$store.getters.loading
+    },
+
   },
 
-  created() {
+  async created() {
 
-    this.getProposalBids()
-    this.updateStep()
+    this.enableLoading()
+    await this.getProposalBids()
+    await this.updateStep()
+    this.disableLoading()
 
   },
 }

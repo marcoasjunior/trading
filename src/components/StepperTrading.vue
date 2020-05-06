@@ -86,21 +86,15 @@ export default {
       this.steps = parseInt(val)
     },
 
-    changeStep(tradingStep) {
-      console.log(tradingStep) // REFATORAR
-    },
-
     async getStep() {
       await this.axios
         .get(`http://localhost:3000/api/getTradingStep/${this.$route.params.id}`, this.config)
         .then((response) => {
 
-          console.log(response)
-
-          if (response.data == 'Proposal') this.$store.dispatch('changeTradingStep', 1)
-          if (response.data === 'Rating') this.$store.dispatch('changeTradingStep', 2)
-          if (response.data == 'Bidding') this.$store.dispatch('changeTradingStep', 3)
-          if (response.data == 'Deal') this.$store.dispatch('changeTradingStep', 4)
+          if (response.data == 'Proposal') this.$store.dispatch('changeStepperStep', 1)
+          if (response.data === 'Rating') this.$store.dispatch('changeStepperStep', 2)
+          if (response.data == 'Bidding') this.$store.dispatch('changeStepperStep', 3)
+          if (response.data == 'Deal') this.$store.dispatch('changeStepperStep', 4)
 
         })
         .catch(e => {
@@ -126,7 +120,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  created() {
 
     this.getStep()
     this.checkProfile()
