@@ -164,22 +164,7 @@ export default {
         })
     },
 
-    async updateStep() {
-
-      await this.axios
-        .post(`http://localhost:3000/api/update/step`, {
-          step: 'rating',
-          id: this.$route.params.id
-        }, this.config)
-        .then((response) => {
-          console.log(response)
-
-        })
-        .catch(e => {
-          console.log(e)
-
-        })
-    },
+  
   },
 
   computed: {
@@ -197,7 +182,6 @@ export default {
 
     this.enableLoading()
     await this.getProposalBids()
-    await this.updateStep()
     this.disableLoading()
 
   },
