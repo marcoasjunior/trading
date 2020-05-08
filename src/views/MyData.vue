@@ -4,6 +4,7 @@
       <FormChangePassword />
       <FormChangeContact />
       <FormChangeAddress />
+      <FormDocs />
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import Profile from '../components/Profile'
 import FormChangePassword from '../components/FormChangePassword'    
 import FormChangeContact from '../components/FormChangeContact'    
 import FormChangeAddress from '../components/FormChangeAddress'    
+import FormDocs from '../components/FormDocs'    
 
 
 export default {
@@ -20,7 +22,8 @@ export default {
       Profile,
       FormChangePassword,
       FormChangeContact,
-      FormChangeAddress
+      FormChangeAddress,
+      FormDocs
   }
 
 }
